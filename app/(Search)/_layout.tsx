@@ -2,6 +2,7 @@ import { View, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { router, Stack } from 'expo-router'
 import { Ionicons } from '@expo/vector-icons'
+import { Colors } from '@/constants/Colors'
 
 export default function Layout() {
     return (
@@ -9,7 +10,7 @@ export default function Layout() {
             headerLeft: () => {
                 return (
                     <TouchableOpacity onPress={() => router.back()}>
-                        <Ionicons name="arrow-back-circle-outline" size={24} color="black" />
+                        <Ionicons name="arrow-back-circle-outline" size={30} color={Colors.light.tint} style={{marginHorizontal: 5}} />
                     </TouchableOpacity>
                 )
             }
@@ -17,7 +18,7 @@ export default function Layout() {
             <Stack.Screen name="index" options={{
                 title: "Search",
             }} />
-            <Stack.Screen name='searchResults' options={{
+            <Stack.Screen name='SearchResults' options={{
                 title: "Search Results",
             }} />
             <Stack.Screen name='filterData' options={{
