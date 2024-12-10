@@ -9,11 +9,10 @@ export default function RootLayout() {
 
 
   const [loaded] = useFonts({
-    "Tajawal-Bold": require('./../assets/fonts/Tajawal-Bold.ttf'),
-    "Tajawal-Black": require('./../assets/fonts/Tajawal-Black.ttf'),
-    "Tajawal-Medium": require('./../assets/fonts/Tajawal-Medium.ttf'),
-    "Tajawal-Regular": require('./../assets/fonts/Tajawal-Regular.ttf'),
-    "Tajawal-Light": require('./../assets/fonts/Tajawal-Light.ttf'),
+    "Fustat-Bold": require('./../assets/fonts/Fustat-Bold.ttf'),
+    "Fustat-Medium": require('./../assets/fonts/Fustat-Medium.ttf'),
+    "Fustat-Regular": require('./../assets/fonts/Fustat-Regular.ttf'),
+    "Fustat-Light": require('./../assets/fonts/Fustat-Light.ttf'),
   })
  
   useEffect(() => {

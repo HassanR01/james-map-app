@@ -2,10 +2,9 @@
 
 export const Fonts = {
     family: {
-        light: 'Tajawal-Light',
-        regular: 'Tajawal-Regular',
-        medium: 'Tajawal-Medium',
-        bold: 'Tajawal-Bold',
-        black: 'Tajawal-Black'
+        light: 'Fustat-Light',
+        regular: 'Fustat-Regular',
+        medium: 'Fustat-Medium',
+        bold: 'Fustat-Bold',
     }
 }
