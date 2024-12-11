@@ -1,97 +1,93 @@
 import { createContext, useState, Dispatch, SetStateAction, useEffect, useContext, ReactNode } from "react";
 import axios from "axios";
 
-interface Developer {
+export interface Developer {
     _id: number;
-    name: String;
-    description: String;
-    keywords: String;
-    image: String;
+    name: string;
+    description: string;
+    keywords: string;
+    image: string;
     // App Edits
-    nameAr: String;
-    descriptionEn: String;
+    nameAr: string;
+    descriptionEn: string;
 }
 
-interface Unit {
+export interface Unit {
     _id: number;
-    title: String;
-    description: String;
-    keywords: String;
+    title: string;
+    description: string;
+    keywords: string;
     images: [];
     location: [];
-    article: String;
-    developer: String;
-    zone: String;
-    highScale: String;
-    project: String;
-    type: String;
-    startBudget: Number;
-    deliver: String;
-    bathrooms: Number;
-    bedrooms: Number;
-    area: Number;
-    floor: Number;
+    article: string;
+    developer: string;
+    zone: string;
+    highScale: string;
+    project: string;
+    type: string;
+    startBudget: number;
+    deliver: string;
+    bathrooms: number;
+    bedrooms: number;
+    area: number;
+    floor: number;
     // App Edits
-    titleAr: String;
-    descriptionEn: String;
-    articleEn: String;
-    highScaleEn: String;
-    paymentPlans: [
-        // {
-        // downpayment: Number;
-        // payYears: Number;
-        // installment every how month
-        // First Installment
-        // Status
-        // note
-        // }
-    ],
-    video: String;
-    layout: String;
+    titleAr: string;
+    descriptionEn: string;
+    articleEn: string;
+    highScaleEn: string;
+    paymentPlans: {
+        downpayment: number;
+        payYears: number;
+        installment: number;
+        firstInstallment: number;
+        status: string;
+        note: string;
+    }[];
+    video: string;
+    layout: string;
 }
 
-interface Project {
+export interface Project {
     _id: number;
-    title: String;
-    description: String;
-    keywords: String;
+    title: string;
+    description: string;
+    keywords: string;
     images: [];
     location: [];
-    article: String;
-    developer: String;
-    zone: String;
-    highScale: String;
-    startBudget: Number;
+    article: string;
+    developer: string;
+    zone: string;
+    highScale: string;
+    startBudget: number;
     // App Edits
-    titleAr: String;
-    descriptionEn: String;
-    articleEn: String;
-    highScaleEn: String;
-    deliver: String;
-    paymentPlans: [
-        // {
-        // downpayment: Number
-        // payYears: Number
-        // installment every how month
-        // First Installment
-        // Status
-        // note
-        // }
-    ],
-    video: String;
-    masterPlan: String;
+    titleAr: string;
+    descriptionEn: string;
+    articleEn: string;
+    highScaleEn: string;
+    deliver: string;
+    paymentPlans: {
+        downpayment: number;
+        payYears: number;
+        installment: number;
+        firstInstallment: number;
+        status: string;
+        note: string;
+    }[],
+    video: string;
+    masterPlan: string;
 }
 
-interface Zone {
+export interface Zone {
     _id: number;
-    name: String;
-    nameAr: String;
-    image: String;
+    name: string;
+    nameAr: string;
+    image: string;
     location: [];
-    highScale: String;
+    highScale: string;
 }
 
-interface DataContextType {
+export interface DataContextType {
     developers: Developer[] | null;
     setDevelopers: Dispatch<SetStateAction<Developer[] | null>>;
     units: Unit[] | null;

@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useFonts } from "expo-font";
 import DataProvider from "@/components/context/DataContext";
+import { StatusBar } from "react-native";
 
 
 SplashScreen.preventAutoHideAsync();
@@ -29,8 +30,8 @@ export default function RootLayout() {
 
   return (
     <SafeAreaProvider>
+      <StatusBar barStyle={'default'} />
       <DataProvider>
-
         <Stack screenOptions={{
           headerShown: false,
         }}>
@@ -44,7 +45,6 @@ export default function RootLayout() {
           <Stack.Screen name="(SignIn)" />
         </Stack>
       </DataProvider>
-
     </SafeAreaProvider>
   )
 }
