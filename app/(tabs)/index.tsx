@@ -27,11 +27,13 @@ export default function Home() {
   const posters = [
     {
       image: require('@/assets/images/chatposter.png'),
-      name: 'Chat Bot Ai'
+      name: 'Chat Bot Ai',
+      operationLink: '/(Ai)'
     },
     {
       image: require('@/assets/images/calcposter.png'),
-      name: 'Calc Ai'
+      name: 'Calc Ai',
+      operationLink: '/(Ai)/CalcAi'
     }
   ]
 
@@ -207,7 +209,9 @@ export default function Home() {
             keyExtractor={(item, ind) => String(ind)}
             style={{ marginVertical: 10 }}
             renderItem={({ item }) => (
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => router.push({
+                pathname: item.operationLink as any
+              })}>
                 <Image source={item.image} style={styles.posters} />
               </TouchableOpacity>
             )}
