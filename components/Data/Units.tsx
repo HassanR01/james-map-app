@@ -69,7 +69,7 @@ const Units: React.FC<UnitsProps> = ({ units }) => {
                     <ImageBackground source={{ uri: `${unit.images[0]}` }} style={styles.imageBg}>
                         <View style={styles.headerCard}>
                             <View>
-                                <AntDesign name="heart" size={24} color="gold" />
+                                <AntDesign name="heart" size={24} color="white" />
                             </View>
                         </View>
                         <LinearGradient

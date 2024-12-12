@@ -1,21 +1,36 @@
 import { Colors } from "@/constants/Colors";
-import { Stack } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
+import { router, Stack } from "expo-router";
+import { TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Layout() {
   return (
-    <SafeAreaView edges={['top', 'left', 'right']} style={{
-      flex: 1,
-      backgroundColor: Colors.light.background
-    }}>
-      <Stack screenOptions={{
-        headerShown: false
-      }}>
-        <Stack.Screen name="index" />
-        <Stack.Screen name="Welcome" />
-        <Stack.Screen name="SignUp" />
-        <Stack.Screen name="LogIn" />
-      </Stack>
-    </SafeAreaView>
+    <Stack>
+      <Stack.Screen name="index"
+        options={{
+          headerShown: false,
+          title: "Index"
+        }}
+      />
+      <Stack.Screen name="Welcome"
+        options={{
+          headerShown: false,
+          title: "Welcome"
+        }}
+      />
+      <Stack.Screen name="SignUp"
+        options={{
+          title: "Sign Up",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen name="LogIn"
+        options={{
+          title: "Log In",
+          headerShown: false,
+        }}
+      />
+    </Stack>
   )
 }

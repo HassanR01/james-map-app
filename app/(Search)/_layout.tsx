@@ -1,9 +1,10 @@
 import { View, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { router, Stack } from 'expo-router'
-import { Ionicons } from '@expo/vector-icons'
+import { AntDesign, Ionicons } from '@expo/vector-icons'
 import { Colors } from '@/constants/Colors'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { ConstantStyles } from '@/constants/Styles'
 
 export default function Layout() {
     return (
@@ -26,6 +27,11 @@ export default function Layout() {
                 }} />
                 <Stack.Screen name='SearchResults' options={{
                     title: "Search Results",
+                    headerRight: () => (
+                        <TouchableOpacity style={[ConstantStyles.IconButton, {padding: 3}]} onPress={() => router.push('/(Search)/filterData')}>
+                            <AntDesign name="filter" size={22} color={Colors.light.tint} />
+                        </TouchableOpacity>
+                    )
                 }} />
                 <Stack.Screen name='filterData' options={{
                     title: "Filter Requirments",

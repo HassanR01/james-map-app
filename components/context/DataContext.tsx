@@ -53,7 +53,7 @@ export interface Project {
     title: string;
     description: string;
     keywords: string;
-    images: [];
+    images: string[];
     location: [];
     article: string;
     developer: string;
