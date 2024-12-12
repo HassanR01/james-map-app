@@ -106,7 +106,7 @@ const Units: React.FC<UnitsProps> = ({ units }) => {
                         <View style={styles.details}>
                             <View style={styles.detailsCont}>
                                 <FontAwesome name="bed" size={24} color={Colors.light.tint} />
-                                <Text style={styles.detailText}>{unit.bathrooms.toLocaleString()} bathrooms</Text>
+                                <Text style={styles.detailText}>{unit.bathrooms.toLocaleString()} bedrooms</Text>
                             </View>
                             <View style={styles.detailsCont}>
                                 <MaterialIcons name="bathtub" size={28} color="black" />

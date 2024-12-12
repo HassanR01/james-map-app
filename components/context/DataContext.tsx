@@ -118,10 +118,10 @@ export default function DataProvider({ children }: { children: ReactNode }) {
         const fetchData = async () => {
             try {
                 const [resDev, resUnits, resProjects, resZones] = await Promise.all([
-                    axios.get<Developer[]>('http://172.20.10.2:5000/api/v1/developers/get-developers'),
-                    axios.get<Unit[]>('http://172.20.10.2:5000/api/v1/units/get-units'),
-                    axios.get<Project[]>('http://172.20.10.2:5000/api/v1/projects/get-projects'),
-                    axios.get<Zone[]>('http://172.20.10.2:5000/api/v1/zones/get-zones')
+                    axios.get<Developer[]>('http://192.168.1.33:5000/api/v1/developers/get-developers'),
+                    axios.get<Unit[]>('http://192.168.1.33:5000/api/v1/units/get-units'),
+                    axios.get<Project[]>('http://192.168.1.33:5000/api/v1/projects/get-projects'),
+                    axios.get<Zone[]>('http://192.168.1.33:5000/api/v1/zones/get-zones')
                 ]);
 
                 setDevelopers(resDev.data);
