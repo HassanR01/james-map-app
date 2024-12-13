@@ -1,15 +1,52 @@
 import { Image, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { LinearGradient } from 'expo-linear-gradient'
 import { Fonts } from '@/constants/Fonts'
 import { Colors } from '@/constants/Colors'
 import { Dropdown } from 'react-native-element-dropdown'
 import { router } from 'expo-router'
 import { AntDesign, FontAwesome5, FontAwesome6, Fontisto, MaterialCommunityIcons, MaterialIcons, Octicons } from '@expo/vector-icons'
+import { Audio } from 'expo-av'
 
 
 export default function Launching() {
     const [language, setLanguage] = useState('en')
+
+    // Audio Working
+      const playAudio = async () => {
+        try {
+    
+          const sound = await Audio.Sound.createAsync(
+            require('../../assets/voice/welcome.mp3')
+          )
+          await sound.sound.playAsync()
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      
+      useEffect(() => {
+        setTimeout(() => {
+          playAudio()
+
+        }, 1000);
+    
+        setTimeout(() => {
+
+        }, 5500);
+    
+        return () => {
+          Audio.Sound.createAsync(
+            require('../../assets/voice/welcome.mp3')
+          ).then(sound => {
+            sound.sound.unloadAsync()
+          })
+        }
+      }, [])
+    
+
+
+
 
     return (
 
@@ -118,7 +155,7 @@ export default function Launching() {
                         <Text style={styles.iconText}>Ships</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => router.push('/(tabs)/More')} style={styles.IconCont}>
+                    <TouchableOpacity onPress={() => router.push('/(Ai)')} style={styles.IconCont}>
                         <View style={styles.icon}>
                             <MaterialIcons name="support-agent" size={30} color="black" />
                         </View>

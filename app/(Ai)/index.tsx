@@ -23,7 +23,7 @@ export default function ChatAi() {
                 }]}
             >
                 <LinearGradient
-                    colors={['#f1f1b7', Colors.light.background]}
+                    colors={[Colors.light.tint, Colors.light.background]}
                     style={{
                         flex: 1,
                         display: 'flex',
@@ -86,9 +86,9 @@ export default function ChatAi() {
 
 const styles = StyleSheet.create({
     title: {
-        fontSize: 22,
+        fontSize: 26,
         fontFamily: Fonts.family.bold,
-        color: Colors.light.tint,
+        color: Colors.light.background,
 
     },
 })
