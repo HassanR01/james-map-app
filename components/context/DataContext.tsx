@@ -2,7 +2,7 @@ import { createContext, useState, Dispatch, SetStateAction, useEffect, useContex
 import axios from "axios";
 
 export interface Developer {
-    _id: number;
+    _id: string;
     name: string;
     description: string;
     keywords: string;
@@ -13,7 +13,7 @@ export interface Developer {
 }
 
 export interface Unit {
-    _id: number;
+    _id: string;
     title: string;
     description: string;
     keywords: string;
@@ -49,7 +49,7 @@ export interface Unit {
 }
 
 export interface Project {
-    _id: number;
+    _id: string;
     title: string;
     description: string;
     keywords: string;
@@ -79,12 +79,39 @@ export interface Project {
 }
 
 export interface Zone {
-    _id: number;
+    _id: string;
     name: string;
     nameAr: string;
     image: string;
     location: [];
     highScale: string;
+}
+
+export interface User {
+    _id: string;
+    name: string,
+    username: string,
+    password: string,
+    image: string,
+    email: string,
+    mobile: string,
+    role: string,
+    dataToSuggest: {
+        zone: string,
+        subZone: string,
+        category: string,
+        subCategory: string,
+        developer: string,
+        subDeveloper: string,
+        minBudget: number,
+        maxBudget: number,
+        area: number,
+    },
+    favourites: {} [],
+    ownedUnits: Unit[],
+    Barters: {} [],
+    history: {} [],
+    logs: {} [],
 }
 
 export interface DataContextType {
@@ -96,6 +123,8 @@ export interface DataContextType {
     setProjects: Dispatch<SetStateAction<Project[] | null>>;
     zones: Zone[] | null;
     setZones: Dispatch<SetStateAction<Zone[] | null>>;
+    users: User[] | null;
+    setUsers: Dispatch<SetStateAction<User[] | null>>;
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
@@ -113,21 +142,24 @@ export default function DataProvider({ children }: { children: ReactNode }) {
     const [units, setUnits] = useState<Unit[] | null>(null);
     const [projects, setProjects] = useState<Project[] | null>(null);
     const [zones, setZones] = useState<Zone[] | null>(null);
+    const [users, setUsers] = useState<User[] | null>(null);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [resDev, resUnits, resProjects, resZones] = await Promise.all([
-                    axios.get<Developer[]>('http://192.168.1.33:5000/api/v1/developers/get-developers'),
-                    axios.get<Unit[]>('http://192.168.1.33:5000/api/v1/units/get-units'),
-                    axios.get<Project[]>('http://192.168.1.33:5000/api/v1/projects/get-projects'),
-                    axios.get<Zone[]>('http://192.168.1.33:5000/api/v1/zones/get-zones')
+                const [resDev, resUnits, resProjects, resZones, resUsers] = await Promise.all([
+                    axios.get<Developer[]>('http://172.20.10.2:5000/api/v1/developers/get-developers'),
+                    axios.get<Unit[]>('http://172.20.10.2:5000/api/v1/units/get-units'),
+                    axios.get<Project[]>('http://172.20.10.2:5000/api/v1/projects/get-projects'),
+                    axios.get<Zone[]>('http://172.20.10.2:5000/api/v1/zones/get-zones'),
+                    axios.get<User[]>('http://172.20.10.2:5000/api/v1/users/get-users'),
                 ]);
 
                 setDevelopers(resDev.data);
                 setUnits(resUnits.data);
                 setProjects(resProjects.data);
                 setZones(resZones.data);
+                setUsers(resUsers.data);
             } catch (error) {
                 console.error("Failed to fetch data", error);
             }
@@ -137,7 +169,7 @@ export default function DataProvider({ children }: { children: ReactNode }) {
     }, []);
 
     return (
-        <DataContext.Provider value={{ developers, setDevelopers, units, setUnits, projects, setProjects, zones, setZones }}>
+        <DataContext.Provider value={{ developers, setDevelopers, units, setUnits, projects, setProjects, zones, setZones, users, setUsers }}>
             {children}
         </DataContext.Provider>
     );
