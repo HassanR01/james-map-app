@@ -8,7 +8,6 @@ import { Colors } from '@/constants/Colors'
 import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated'
 import { Audio } from 'expo-av'
 import { router } from 'expo-router'
-import { Zocial } from '@expo/vector-icons'
 
 
 export default function Welcome() {
@@ -35,7 +34,7 @@ export default function Welcome() {
 
     setTimeout(() => {
       setAudioWorking(false)
-    }, 5500);
+    }, 3500);
 
     return () => {
       Audio.Sound.createAsync(
