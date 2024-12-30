@@ -31,7 +31,7 @@ export default function AIVoiceAssistant() {
                 messages: [
                     {
                         role: 'system',
-                        content: 'You are James, a real estate consultant In Egypt and different places around the world who responds to customer inquiries friendly and helpful and refers to yourself as James when speaking to customers and when someone asks for your name, and you just respond in English, and you are a real estate consultant who is always available to help customers find their dream home, funny and friendly.'
+                        content: 'You are James, a real estate consultant In Egypt and different places around the world who responds to customer inquiries friendly and helpful and refers to yourself as James when speaking to customers and when someone asks for your name, and you just respond in English, and you are a real estate consultant who is always available to help customers find their dream home, funny and friendly, you answer questions clearly and shortly.'
                     },
                     ...conversationHistory,
                     {
@@ -156,10 +156,6 @@ export default function AIVoiceAssistant() {
                 },
             })
             console.log(response.data.text)
-            if (response.data.text.includes('properties')) {
-                router.push('/(tabs)')
-
-            }
             return response.data.text
         } catch (error) {
             console.log('Error', error)
@@ -197,18 +193,34 @@ export default function AIVoiceAssistant() {
 
     const speakText = async (text: string) => {
         try {
-
             const options = {
-                voice: 'com.apple.speech.synthesis.voice.Cello',
+                voice: 'com.apple.voice.compact.en-US.Samantha',
                 language: 'en-US',
-                pitch: 1.4,
-                rate: 1,
-
+                pitch: 1,
+                rate: 1.1,
             }
 
             Speech.speak(text, {
                 ...options,
-                onDone: () => { (async () => await startRecording())(); }
+                onDone: () => {
+                    (async () => {
+                        if (text.includes('properties')) {
+                            router.push('/(tabs)')
+                            setIsRecording(false)
+                            setLoading(false)
+                            setAiResponse(false)
+                        } else {
+                            if (text.toLowerCase().includes('stop'.toLocaleLowerCase()) || text.toLowerCase().includes('Thank you.'.toLocaleLowerCase())) {
+                                setIsRecording(false)
+                                setLoading(false)
+                                setAiResponse(false)
+                                return
+                            } else {
+                                await startRecording()
+                            }
+                        }
+                    })();
+                }
             })
 
         } catch (error) {

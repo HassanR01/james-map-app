@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View, Text, StatusBar } from 'react-native'
 import React from 'react'
 import { Tabs } from 'expo-router'
 import { Colors } from '@/constants/Colors'
@@ -13,6 +13,7 @@ export default function _layout() {
                 backgroundColor: Colors.light.background
             }} >
 
+                <StatusBar barStyle={'dark-content'} />
                 <Tabs screenOptions={{
                     tabBarStyle: {
                         paddingVertical: 10,
