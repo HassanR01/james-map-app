@@ -1,4 +1,4 @@
-import { Image, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Image, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { LinearGradient } from 'expo-linear-gradient'
 import { Fonts } from '@/constants/Fonts'
@@ -7,43 +7,34 @@ import { Dropdown } from 'react-native-element-dropdown'
 import { router } from 'expo-router'
 import { AntDesign, FontAwesome5, FontAwesome6, Fontisto, MaterialCommunityIcons, MaterialIcons, Octicons } from '@expo/vector-icons'
 import { Audio } from 'expo-av'
+import * as Speech from 'expo-speech'
+import AIVoiceAssistant from '@/components/Elements/AIVoiceAssistant'
 
 
 export default function Launching() {
     const [language, setLanguage] = useState('en')
 
-    // Audio Working
-      const playAudio = async () => {
+    const SpeechText = async () => {
+        const text = 'Welcome to James Map, How can I help you today?'
         try {
-    
-          const sound = await Audio.Sound.createAsync(
-            require('../../assets/voice/welcome.mp3')
-          )
-          await sound.sound.playAsync()
+            const options = {
+                voice: 'com.apple.speech.synthesis.voice.Cello',
+                language: 'en-US',
+                pitch: 1.4,
+                rate: 1,
+
+            }
+
+            Speech.speak(text, options)
+
         } catch (error) {
-          console.log(error)
+            console.log(error)
         }
-      }
-      
-      useEffect(() => {
-        setTimeout(() => {
-          playAudio()
+    }
 
-        }, 1000);
-    
-        setTimeout(() => {
-
-        }, 5500);
-    
-        return () => {
-          Audio.Sound.createAsync(
-            require('../../assets/voice/welcome.mp3')
-          ).then(sound => {
-            sound.sound.unloadAsync()
-          })
-        }
-      }, [])
-    
+    useEffect(() => {
+        // SpeechText()
+    }, [])
 
 
 
@@ -63,116 +54,121 @@ export default function Launching() {
             start={{ x: 0, y: -0.2 }}
             end={{ x: 0, y: 1 }}
         >
-            <StatusBar barStyle='light-content' />
-            {/* Language Choose arabic and English */}
-            <View style={styles.container}>
-                <Dropdown
-                    style={styles.dropdown}
-                    data={[
-                        { label: 'English', value: 'en' },
-                        { label: 'Arabic', value: 'ar' },
-                    ]}
-                    containerStyle={{
-                        borderRadius: 10,
-                    }}
-                    labelField={'label'}
-                    valueField={'value'}
-                    value={language}
-                    onChange={(item) => setLanguage(item.value)}
-                />
-            </View>
-            <View
-                style={{
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    width: '100%',
-                    marginTop: 100,
-                    marginBottom: 20
-                }}>
-                <View style={{
-                    marginBottom: 20
-                }}>
-                    <Image source={require('../../assets/images/earth.gif')} style={{ width: 150, height: 150 }} />
+            <ScrollView style={{
+                width: '100%',
+                height: '100%',
+            }}>
+                <StatusBar barStyle='light-content' />
+                {/* Language Choose arabic and English */}
+                <View style={styles.container}>
+                    <Dropdown
+                        style={styles.dropdown}
+                        data={[
+                            { label: 'English', value: 'en' },
+                            { label: 'Arabic', value: 'ar' },
+                        ]}
+                        containerStyle={{
+                            borderRadius: 10,
+                        }}
+                        labelField={'label'}
+                        valueField={'value'}
+                        value={language}
+                        onChange={(item) => setLanguage(item.value)}
+                    />
                 </View>
-                <Text style={styles.title}>Welcome to James Map</Text>
-                <View style={{
-                    width: '100%',
-                    display: 'flex',
-                    flexDirection: 'row',
-                    flexWrap: 'wrap',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    paddingVertical: 20,
-                    marginBottom: 20
-                }}>
-                    {/* Icons To App */}
-                    <TouchableOpacity onPress={() => router.push('/(tabs)')} style={styles.IconCont}>
-                        <View style={styles.icon}>
-                            <AntDesign name="home" size={28} color="black" />
-                        </View>
-                        <Text style={styles.iconText}>Home</Text>
-                    </TouchableOpacity>
+                <View
+                    style={{
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        width: '100%',
+                        marginTop: 150,
+                        marginBottom: 20
+                    }}>
+                    <Text style={styles.title}>Welcome to James Map</Text>
+                    <View style={{
+                        marginBottom: 20
+                    }}>
+                        <AIVoiceAssistant />
+                    </View>
+                    <View style={{
+                        width: '100%',
+                        display: 'flex',
+                        flexDirection: 'row',
+                        flexWrap: 'wrap',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        paddingVertical: 20,
+                        marginBottom: 20
+                    }}>
+                        {/* Icons To App */}
+                        <TouchableOpacity onPress={() => router.push('/(tabs)')} style={styles.IconCont}>
+                            <View style={styles.icon}>
+                                <AntDesign name="home" size={28} color="black" />
+                            </View>
+                            <Text style={styles.iconText}>Home</Text>
+                        </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => router.push('/(tabs)')} style={styles.IconCont}>
-                        <View style={styles.icon}>
-                            <FontAwesome6 name="money-bill-trend-up" size={24} color="black" />
-                        </View>
-                        <Text style={styles.iconText}>Investment</Text>
-                    </TouchableOpacity>
+                        <TouchableOpacity onPress={() => router.push('/(tabs)')} style={styles.IconCont}>
+                            <View style={styles.icon}>
+                                <FontAwesome6 name="money-bill-trend-up" size={24} color="black" />
+                            </View>
+                            <Text style={styles.iconText}>Investment</Text>
+                        </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => router.push('/(tabs)')} style={styles.IconCont}>
-                        <View style={styles.icon}>
-                            <Octicons name="git-compare" size={24} color="black" />
-                        </View>
-                        <Text style={styles.iconText}>Comparison</Text>
-                    </TouchableOpacity>
+                        <TouchableOpacity onPress={() => router.push('/(tabs)')} style={styles.IconCont}>
+                            <View style={styles.icon}>
+                                <Octicons name="git-compare" size={24} color="black" />
+                            </View>
+                            <Text style={styles.iconText}>Comparison</Text>
+                        </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => router.push('/(tabs)/Articles')} style={styles.IconCont}>
-                        <View style={styles.icon}>
-                            <MaterialCommunityIcons name="bookshelf" size={30} color="black" />
-                        </View>
-                        <Text style={styles.iconText}>Articles</Text>
-                    </TouchableOpacity>
+                        <TouchableOpacity onPress={() => router.push('/(tabs)/Articles')} style={styles.IconCont}>
+                            <View style={styles.icon}>
+                                <MaterialCommunityIcons name="bookshelf" size={30} color="black" />
+                            </View>
+                            <Text style={styles.iconText}>Articles</Text>
+                        </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => router.push('/(Maps)')} style={styles.IconCont}>
-                        <View style={styles.icon}>
-                            <FontAwesome6 name="map-location-dot" size={24} color="black" />
-                        </View>
-                        <Text style={styles.iconText}>Maps</Text>
-                    </TouchableOpacity>
+                        <TouchableOpacity onPress={() => router.push('/(Maps)')} style={styles.IconCont}>
+                            <View style={styles.icon}>
+                                <FontAwesome6 name="map-location-dot" size={24} color="black" />
+                            </View>
+                            <Text style={styles.iconText}>Maps</Text>
+                        </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => router.push('/(tabs)')} style={styles.IconCont}>
-                        <View style={styles.icon}>
-                            <FontAwesome5 name="handshake" size={24} color="black" />
-                        </View>
-                        <Text style={styles.iconText}>Barters</Text>
-                    </TouchableOpacity>
+                        <TouchableOpacity onPress={() => router.push('/(tabs)')} style={styles.IconCont}>
+                            <View style={styles.icon}>
+                                <FontAwesome5 name="handshake" size={24} color="black" />
+                            </View>
+                            <Text style={styles.iconText}>Barters</Text>
+                        </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => router.push('/(tabs)')} style={styles.IconCont}>
-                        <View style={styles.icon}>
-                            <Fontisto name="ship" size={24} color="black" />
-                        </View>
-                        <Text style={styles.iconText}>Ships</Text>
-                    </TouchableOpacity>
+                        <TouchableOpacity onPress={() => router.push('/(tabs)')} style={styles.IconCont}>
+                            <View style={styles.icon}>
+                                <Fontisto name="ship" size={24} color="black" />
+                            </View>
+                            <Text style={styles.iconText}>Ships</Text>
+                        </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => router.push('/(Ai)')} style={styles.IconCont}>
-                        <View style={styles.icon}>
-                            <MaterialIcons name="support-agent" size={30} color="black" />
-                        </View>
-                        <Text style={styles.iconText}>Supporting</Text>
-                    </TouchableOpacity>
+                        <TouchableOpacity onPress={() => router.push('/(Ai)')} style={styles.IconCont}>
+                            <View style={styles.icon}>
+                                <MaterialIcons name="support-agent" size={30} color="black" />
+                            </View>
+                            <Text style={styles.iconText}>Supporting</Text>
+                        </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => router.push('/(tabs)/More')} style={styles.IconCont}>
-                        <View style={styles.icon}>
-                            <MaterialCommunityIcons name="information-variant" size={30} color="black" />
-                        </View>
-                        <Text style={styles.iconText}>James</Text>
-                    </TouchableOpacity>
+                        <TouchableOpacity onPress={() => router.push('/(tabs)/More')} style={styles.IconCont}>
+                            <View style={styles.icon}>
+                                <MaterialCommunityIcons name="information-variant" size={30} color="black" />
+                            </View>
+                            <Text style={styles.iconText}>James</Text>
+                        </TouchableOpacity>
+
+                    </View>
 
                 </View>
-
-            </View>
-        </LinearGradient>
+            </ScrollView>
+        </LinearGradient >
     )
 }
 

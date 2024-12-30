@@ -1,4 +1,4 @@
-import { StyleSheet, Text, ScrollView, View, TouchableOpacity, Image } from 'react-native'
+import { StyleSheet, Text, ScrollView, View, TouchableOpacity, Image, StatusBar } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import LottieView from 'lottie-react-native'
 import { ConstantStyles } from '@/constants/Styles'
@@ -70,6 +70,7 @@ export default function Welcome() {
 
 
   return (
+
     <LinearGradient
       colors={['#00008b', Colors.light.tint]}
       style={{
@@ -83,7 +84,7 @@ export default function Welcome() {
       start={{ x: 0, y: -0.2 }}
       end={{ x: 0, y: 1 }}
     >
-
+      <StatusBar barStyle={'light-content'} />
       <Image source={require('../../assets/images/blue.png')} style={{
         width: 300,
         height: 300,
@@ -110,7 +111,7 @@ export default function Welcome() {
           width: '100%',
           marginBottom: 20
         }}>
-          <AIVoiceAssistant />
+        <AIVoiceAssistant />
         <Animated.View entering={FadeInDown.duration(1000).delay(1000)}>
           <Text style={styles.title}>Welcome to James Map</Text>
         </Animated.View>

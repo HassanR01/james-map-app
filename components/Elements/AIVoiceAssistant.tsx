@@ -6,6 +6,8 @@ import Animated, { FadeInDown } from 'react-native-reanimated'
 import { Feather } from '@expo/vector-icons'
 import { Colors } from '@/constants/Colors'
 import axios from 'axios'
+import LottieView from 'lottie-react-native'
+import { router } from 'expo-router'
 
 export default function AIVoiceAssistant() {
     const [text, setText] = useState('')
@@ -13,6 +15,45 @@ export default function AIVoiceAssistant() {
     const [loading, setLoading] = useState(false)
     const [recording, setRecourding] = useState<Audio.Recording>()
     const [aiResponse, setAiResponse] = useState(false)
+
+    const [conversationHistory, setConversationHistory] = useState<{ role: string, content: string }[]>([])
+
+    useEffect(() => {
+        if (text) {
+            setConversationHistory(prevHistory => [...prevHistory, { role: 'user', content: text }])
+        }
+    }, [text])
+
+    const sendToGPT = async (text: string) => {
+        try {
+            const response = await axios.post('https://api.openai.com/v1/chat/completions', {
+                model: 'gpt-4',
+                messages: [
+                    {
+                        role: 'system',
+                        content: 'You are James, a real estate consultant In Egypt and different places around the world who responds to customer inquiries friendly and helpful and refers to yourself as James when speaking to customers and when someone asks for your name, and you just respond in English, and you are a real estate consultant who is always available to help customers find their dream home, funny and friendly.'
+                    },
+                    ...conversationHistory,
+                    {
+                        role: 'user',
+                        content: text
+                    }
+                ]
+            }, {
+                headers: {
+                    Authorization: `Bearer ${API_KEY}`,
+                    'Content-Type': 'application/json'
+                }
+            })
+            const aiMessage = response.data.choices[0].message.content
+            setConversationHistory(prevHistory => [...prevHistory, { role: 'assistant', content: aiMessage }])
+            setText(aiMessage)
+            setLoading(false)
+            return aiMessage
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     const API_KEY = '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'
 
@@ -78,7 +119,6 @@ export default function AIVoiceAssistant() {
             setLoading(true)
             await recording?.stopAndUnloadAsync()
 
-
             const uri = recording?.getURI()
             if (!uri) throw new Error('Recording URI is null')
 
@@ -98,7 +138,6 @@ export default function AIVoiceAssistant() {
         }
     }
 
-
     const sendAudioToWhisper = async (uri: string) => {
         try {
             const formData: any = new FormData()
@@ -117,51 +156,60 @@ export default function AIVoiceAssistant() {
                 },
             })
             console.log(response.data.text)
+            if (response.data.text.includes('properties')) {
+                router.push('/(tabs)')
+
+            }
             return response.data.text
         } catch (error) {
             console.log('Error', error)
         }
     }
 
-    const sendToGPT = async (text: string) => {
-        try {
-            const response = await axios.post('https://api.openai.com/v1/chat/completions', {
-                model: 'gpt-4',
-                messages: [
-                    {
-                        role: 'system',
-                        content: 'You are James, a real estate consultant who responds to customer inquiries and refers to yourself as James when speaking to customers and when someone asks for your name, and you just respond in English.'
-                    },
-                    {
-                        role: 'user',
-                        content: text
-                    }
-                ]
-            }, {
-                headers: {
-                    Authorization: `Bearer ${API_KEY}`,
-                    'Content-Type': 'application/json'
-                }
-            }
-            )
-            setText(response.data.choices[0].message.content)
-            setLoading(false)
-            return response.data.choices[0].message.content
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    // const sendToGPT = async (text: string) => {
+    //     try {
+    //         const response = await axios.post('https://api.openai.com/v1/chat/completions', {
+    //             model: 'gpt-4',
+    //             messages: [
+    //                 {
+    //                     role: 'system',
+    //                     content: 'You are James, a real estate consultant who responds to customer inquiries friendly and helpful and refers to yourself as James when speaking to customers and when someone asks for your name, and you just respond in English, and you are a real estate consultant who is always available to help customers find their dream home, funny and friendly.'
+    //                 },
+    //                 {
+    //                     role: 'user',
+    //                     content: text
+    //                 }
+    //             ]
+    //         }, {
+    //             headers: {
+    //                 Authorization: `Bearer ${API_KEY}`,
+    //                 'Content-Type': 'application/json'
+    //             }
+    //         }
+    //         )
+    //         setText(response.data.choices[0].message.content)
+    //         setLoading(false)
+    //         return response.data.choices[0].message.content
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // }
 
     const speakText = async (text: string) => {
         try {
 
             const options = {
-                voice: 'com.apple.ttsbundle.Samantha-compact',
+                voice: 'com.apple.speech.synthesis.voice.Cello',
                 language: 'en-US',
-                pitch: 1.1,
+                pitch: 1.4,
+                rate: 1,
+
             }
 
-            Speech.speak(text, options)
+            Speech.speak(text, {
+                ...options,
+                onDone: () => { (async () => await startRecording())(); }
+            })
 
         } catch (error) {
             console.log(error)
@@ -180,43 +228,65 @@ export default function AIVoiceAssistant() {
     return (
         <>
             <Animated.View entering={FadeInDown.duration(1000).delay(800)}>
-                {isRecording ? (
-                    <TouchableOpacity onPress={stopRecording}
-                        style={{
-                            width: 120,
-                            height: 120,
-                            borderRadius: 100,
-                            backgroundColor: Colors.light.background,
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            marginVertical: 100
-                        }}
-                    >
-                        <Feather name="stop-circle" size={50} color="red" />
-                    </TouchableOpacity>
-                ) : (
+                {loading ? (
                     <>
-                        {loading ? (
+                        <TouchableOpacity
+                            style={{
+                                width: 120,
+                                height: 120,
+                                borderRadius: 100,
+
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                marginVertical: 100
+                            }}
+                        >
+                            <LottieView
+                                source={require('../../assets/Animations/loading.json')}
+                                autoPlay
+                                loop
+                                style={{ width: 300, height: 300 }}
+                            />
+                        </TouchableOpacity>
+                    </>
+                ) : (
+
+                    <>
+                        {!isRecording ? (
                             <>
-                                <TouchableOpacity
-                                    style={{
-                                        width: 120,
-                                        height: 120,
-                                        borderRadius: 100,
-                                        backgroundColor: Colors.light.background,
-                                        display: 'flex',
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        marginVertical: 100
-                                    }}
-                                >
-                                    <Feather name="volume-2" size={50} color="black" />
-                                </TouchableOpacity>
+                                {aiResponse ? (
+                                    <>
+                                        <View>
+                                            <LottieView
+                                                source={require('../../assets/Animations/Talking.json')}
+                                                autoPlay
+                                                loop
+                                                style={{ width: 200, height: 200 }}
+                                            />
+                                        </View>
+                                    </>
+                                ) : (
+                                    <>
+                                        <TouchableOpacity onPress={startRecording}
+                                            style={{
+                                                width: 120,
+                                                height: 120,
+                                                borderRadius: 100,
+                                                backgroundColor: Colors.light.background,
+                                                display: 'flex',
+                                                justifyContent: 'center',
+                                                alignItems: 'center',
+                                                marginVertical: 100
+                                            }}
+                                        >
+                                            <Feather name="mic" size={50} color="black" />
+                                        </TouchableOpacity>
+                                    </>
+                                )}
                             </>
                         ) : (
-
-                            <TouchableOpacity onPress={startRecording}
+                            <TouchableOpacity onPress={stopRecording}
                                 style={{
                                     width: 120,
                                     height: 120,
@@ -227,12 +297,23 @@ export default function AIVoiceAssistant() {
                                     alignItems: 'center',
                                     marginVertical: 100
                                 }} >
-                                <Feather name="mic" size={50} color="black" />
+
+                                <LottieView
+                                    source={require('../../assets/Animations/recording.json')}
+                                    autoPlay
+                                    loop
+                                    speed={1.5}
+                                    style={{ width: 200, height: 200 }}
+                                />
                             </TouchableOpacity>
                         )}
+
+
                     </>
-                )}
-            </Animated.View>
+
+                )
+                }
+            </Animated.View >
         </>
     )
 }

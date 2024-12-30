@@ -1,7 +1,7 @@
 import { Colors } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { router, Stack } from "expo-router";
-import { TouchableOpacity } from "react-native";
+import { StatusBar, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Layout() {
