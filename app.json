@@ -33,6 +33,12 @@
           "backgroundColor": "#ffffff"
         }
       ],
+      [
+        "expo-av",
+        {
+          "microphonePermission": "Allow James to access your microphone."
+        }
+      ],
       "expo-font"
     ],
     "experiments": {

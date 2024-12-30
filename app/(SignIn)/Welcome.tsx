@@ -1,4 +1,4 @@
-import { StyleSheet, Text, ScrollView, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, ScrollView, View, TouchableOpacity, Image } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import LottieView from 'lottie-react-native'
 import { ConstantStyles } from '@/constants/Styles'
@@ -8,6 +8,8 @@ import { Colors } from '@/constants/Colors'
 import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated'
 import { Audio } from 'expo-av'
 import { router } from 'expo-router'
+import { Feather } from '@expo/vector-icons'
+import AIVoiceAssistant from '@/components/Elements/AIVoiceAssistant'
 
 
 export default function Welcome() {
@@ -25,25 +27,25 @@ export default function Welcome() {
       console.log(error)
     }
   }
-  
-  useEffect(() => {
-    setTimeout(() => {
-      playAudio()
-      setAudioWorking(true)
-    }, 1000);
 
-    setTimeout(() => {
-      setAudioWorking(false)
-    }, 3500);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     playAudio()
+  //     setAudioWorking(true)
+  //   }, 1000);
 
-    return () => {
-      Audio.Sound.createAsync(
-        require('../../assets/voice/welcome.mp3')
-      ).then(sound => {
-        sound.sound.unloadAsync()
-      })
-    }
-  }, [])
+  //   setTimeout(() => {
+  //     setAudioWorking(false)
+  //   }, 3500);
+
+  //   return () => {
+  //     Audio.Sound.createAsync(
+  //       require('../../assets/voice/welcome.mp3')
+  //     ).then(sound => {
+  //       sound.sound.unloadAsync()
+  //     })
+  //   }
+  // }, [])
 
   // const slides = [
   //   {
@@ -71,7 +73,7 @@ export default function Welcome() {
     <LinearGradient
       colors={['#00008b', Colors.light.tint]}
       style={{
-        flex: 1, 
+        flex: 1,
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
@@ -81,6 +83,26 @@ export default function Welcome() {
       start={{ x: 0, y: -0.2 }}
       end={{ x: 0, y: 1 }}
     >
+
+      <Image source={require('../../assets/images/blue.png')} style={{
+        width: 300,
+        height: 300,
+        position: 'absolute',
+        top: 100,
+        right: -100,
+        zIndex: -1,
+        opacity: 0.9
+      }} />
+
+      <Image source={require('../../assets/images/purple.png')} style={{
+        width: 200,
+        height: 200,
+        position: 'absolute',
+        bottom: 150,
+        left: 0,
+        zIndex: -1,
+      }} />
+
       <View
         style={{
           justifyContent: 'center',
@@ -88,16 +110,7 @@ export default function Welcome() {
           width: '100%',
           marginBottom: 20
         }}>
-        <Animated.View entering={FadeInDown.duration(1000).delay(800)}>
-          <LottieView
-            ref={animation}
-            autoPlay
-            duration={2500}
-            loop={audioWorking}
-            source={require('../../assets/Animations/voice.json')}
-            style={{ width: 300, height: 300 }}
-          />
-        </Animated.View>
+          <AIVoiceAssistant />
         <Animated.View entering={FadeInDown.duration(1000).delay(1000)}>
           <Text style={styles.title}>Welcome to James Map</Text>
         </Animated.View>
@@ -105,7 +118,7 @@ export default function Welcome() {
           <Text style={styles.description}>Your humble assistant to achieve your investment goals</Text>
         </Animated.View>
       </View>
-      
+
       {/* LogIn Or signUp */}
       <View
         style={{
@@ -114,13 +127,13 @@ export default function Welcome() {
           width: '100%',
           padding: 20
         }}>
-        <Animated.View style={{width: '100%'}} entering={FadeIn.duration(1000).delay(1400)}>
+        <Animated.View style={{ width: '100%' }} entering={FadeIn.duration(1000).delay(1400)}>
           <TouchableOpacity onPress={() => router.navigate('/(SignIn)/LogIn')}>
             <Text style={ConstantStyles.button}>LogIn</Text>
           </TouchableOpacity>
         </Animated.View>
 
-        <Animated.View style={{width: '100%' }} entering={FadeIn.duration(1000).delay(1600)}>
+        <Animated.View style={{ width: '100%' }} entering={FadeIn.duration(1000).delay(1600)}>
           <TouchableOpacity onPress={() => router.navigate('/(SignIn)/SignUp')}>
             <Text style={ConstantStyles.button}>Register</Text>
           </TouchableOpacity>
@@ -146,9 +159,9 @@ export default function Welcome() {
           width: '100%',
           padding: 20
         }}>
-        <Animated.View style={{width: '100%'}} entering={FadeIn.duration(1000).delay(1800)}>
-          <TouchableOpacity onPress={() => router.replace('/(tabs)')}>
-            <Text style={[ConstantStyles.button, { backgroundColor: '#00b8ff', color: Colors.light.background}]}>Continue as Guest</Text>
+        <Animated.View style={{ width: '100%' }} entering={FadeIn.duration(1000).delay(1800)}>
+          <TouchableOpacity onPress={() => router.replace('/(Ai)/launching')}>
+            <Text style={[ConstantStyles.button, { backgroundColor: '#00b8ff', color: Colors.light.background }]}>Continue as Guest</Text>
           </TouchableOpacity>
         </Animated.View>
       </View>
