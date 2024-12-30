@@ -76,6 +76,30 @@ export const ConstantStyles = StyleSheet.create({
         justifyContent: 'flex-start',
         backgroundColor: '#f1f8fb',
         marginVertical: 5
+    },
+    h1: {
+        fontSize: 30,
+        fontFamily: Fonts.family.bold,
+        textAlign: 'center',
+        color: Colors.light.tint
+    },
+    h2: {
+        fontSize: 26,
+        fontFamily: Fonts.family.bold,
+        textAlign: 'center',
+        color: Colors.light.tint
+    },
+    h3: {
+        fontSize: 24,
+        fontFamily: Fonts.family.medium,
+        textAlign: 'center',
+        color: Colors.light.tint
+    },
+    text: {
+        fontSize: 16,
+        fontFamily: Fonts.family.medium,
+        textAlign: 'center',
+        color: Colors.light.tint
     }
 
 })
