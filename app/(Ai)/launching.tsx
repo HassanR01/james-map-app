@@ -18,11 +18,10 @@ export default function Launching() {
         const text = 'Welcome to James Map, How can I help you today?'
         try {
             const options = {
-                voice: 'com.apple.speech.synthesis.voice.Cello',
+                voice: 'com.apple.voice.compact.en-US.Samantha',
                 language: 'en-US',
-                pitch: 1.4,
-                rate: 1,
-
+                pitch: 1,
+                rate: 1.1,
             }
 
             Speech.speak(text, options)
@@ -33,7 +32,7 @@ export default function Launching() {
     }
 
     useEffect(() => {
-        // SpeechText()
+        SpeechText()
     }, [])
 
 

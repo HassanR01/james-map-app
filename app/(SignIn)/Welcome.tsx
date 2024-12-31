@@ -16,59 +16,6 @@ export default function Welcome() {
   const animation = useRef<LottieView>(null)
   const [audioWorking, setAudioWorking] = useState(false)
 
-  const playAudio = async () => {
-    try {
-
-      const sound = await Audio.Sound.createAsync(
-        require('../../assets/voice/welcome.mp3')
-      )
-      await sound.sound.playAsync()
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     playAudio()
-  //     setAudioWorking(true)
-  //   }, 1000);
-
-  //   setTimeout(() => {
-  //     setAudioWorking(false)
-  //   }, 3500);
-
-  //   return () => {
-  //     Audio.Sound.createAsync(
-  //       require('../../assets/voice/welcome.mp3')
-  //     ).then(sound => {
-  //       sound.sound.unloadAsync()
-  //     })
-  //   }
-  // }, [])
-
-  // const slides = [
-  //   {
-  //     id: 1,
-  //     title: 'Welcome to James Map App',
-  //     description: 'This is a map app that helps you find your perfect place to live',
-  //     animation: require('../../assets/Animations/search.json')
-  //   },
-  //   {
-  //     id: 2,
-  //     title: 'Invest in your future',
-  //     description: 'Manage your properties and investments in one place',
-  //     animation: require('../../assets/Animations/investment.json')
-  //   },
-  //   {
-  //     id: 3,
-  //     title: 'Close deals faster',
-  //     description: 'Get fast and profitable deals for your investment',
-  //     animation: require('../../assets/Animations/deal.json')
-  //   }
-  // ]
-
-
   return (
 
     <LinearGradient

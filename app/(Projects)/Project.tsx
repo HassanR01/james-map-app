@@ -24,7 +24,14 @@ export default function ProjectScreen() {
     const lengthOfDeveloperUnits = units?.filter(unit => unit.developer === developerOfProject?.name).length
     const projectUnits = units?.filter(unit => unit.project === project.title)
 
-
+    const MonthlyPayment = (project: any) => {
+      const plan = project.paymentPlans[0]
+      const downpayment = project.startBudget * (plan.downpayment / 100)
+      const remaining = project.startBudget - downpayment
+      const years = plan.payYears
+      const monthly = remaining / (years * 12)
+      return monthly.toLocaleString()
+    } 
 
     return (
       <>
@@ -37,7 +44,7 @@ export default function ProjectScreen() {
             headerTintColor: 'black',
           }}
         />
-        <ScrollView style={[ConstantStyles.scrollViewTag, {paddingBottom: 20}]}>
+        <ScrollView style={[ConstantStyles.scrollViewTag, { paddingBottom: 20 }]}>
           <ImagesSlider images={project.images} />
           <View style={styles.projectInfo}>
             <Text style={[ConstantStyles.h1, { fontSize: 20, marginHorizontal: 5 }]}>{project.title} - {project.zone}</Text>
@@ -56,6 +63,34 @@ export default function ProjectScreen() {
             </TouchableOpacity>
           </View>
 
+          {/* Video And MasterPlan */}
+          <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginVertical: 10 }}>
+            <TouchableOpacity style={{
+              borderWidth: 1,
+              borderColor: Colors.light.tint,
+              width: '45%',
+              padding: 5,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: 5,
+            }}>
+              <Text style={{ fontSize: 16, fontFamily: Fonts.family.bold, color: Colors.light.tint }}>Video</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={{
+              borderWidth: 1,
+              borderColor: Colors.light.tint,
+              width: '45%',
+              padding: 5,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: 5,
+            }}>
+              <Text style={{ fontSize: 16, fontFamily: Fonts.family.bold, color: Colors.light.tint }}>Master Plan</Text>
+            </TouchableOpacity>
+          </View>
+          
           {/* payment Plans */}
           <View style={{
             display: 'flex',
@@ -65,9 +100,9 @@ export default function ProjectScreen() {
             width: '100%',
             marginVertical: 10,
           }}>
-            <View style={[styles.line, {width: '28%'}]} />
+            <View style={[styles.line, { width: '28%' }]} />
             <Text style={{ color: Colors.light.text, fontSize: 18, fontFamily: Fonts.family.medium }}>Payment Plans</Text>
-            <View style={[styles.line, {width: '28%'}]} />
+            <View style={[styles.line, { width: '28%' }]} />
           </View>
 
           {project.paymentPlans && project.paymentPlans.map((plan, index) => (
@@ -78,18 +113,35 @@ export default function ProjectScreen() {
               alignItems: 'center',
               width: '100%',
               padding: 10,
-              backgroundColor: Colors.light.icon,
+              backgroundColor: plan.status === 'offer' ? Colors.light.text2 : Colors.light.icon,
               borderRadius: 10,
-              
-              borderBottomWidth: 0.5,
+              marginBottom: 10,
             }} key={index}>
-              <Text style={[ConstantStyles.text, { fontSize: 16, fontFamily: Fonts.family.bold, color: Colors.light.background }]}>{plan.downpayment}%</Text>
-              <Text style={[ConstantStyles.text, { fontSize: 14, color: Colors.light.background }]}>{plan.payYears} years</Text>
+              <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center'}}>
+                <Text style={[ConstantStyles.text, { fontSize: 16, fontFamily: Fonts.family.bold, color: Colors.light.background, marginHorizontal: 5 }]}>{plan.downpayment}%</Text>
+                <Text style={[ConstantStyles.text, { fontSize: 14, color: Colors.light.background }]}>/ {plan.payYears} years</Text>
+              </View>
+              <View>
+                <Text style={[ConstantStyles.text, { fontSize: 16, fontFamily: Fonts.family.bold, color: Colors.light.background, marginHorizontal: 5 }]}>{MonthlyPayment(project)} EGP</Text>
+              </View>
             </View>
           ))}
 
           {/* project Description */}
-        
+          <View style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            alignItems: 'center',
+            width: '100%',
+            marginVertical: 10,
+          }}>
+            <View style={styles.line} />
+            <Text style={{ color: Colors.light.text, fontSize: 18, fontFamily: Fonts.family.medium }}>Description</Text>
+            <View style={styles.line} />
+          </View>
+          <Text style={[ConstantStyles.text, { fontSize: 16, fontFamily: Fonts.family.regular, marginHorizontal: 10 }]}>{project.descriptionEn}</Text>
+
 
           {/* project Units */}
 
@@ -128,7 +180,7 @@ export default function ProjectScreen() {
               }}
               key={index}
             >
-              <Image source={{ uri : `${unit.images[0]}`}} style={{ width: 50, height: 50, borderRadius: 10 }} />
+              <Image source={{ uri: `${unit.images[0]}` }} style={{ width: 50, height: 50, borderRadius: 10 }} />
               <View style={{
                 display: 'flex',
                 flexDirection: 'column',
