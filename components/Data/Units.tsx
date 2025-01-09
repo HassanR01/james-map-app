@@ -64,7 +64,9 @@ const Units: React.FC<UnitsProps> = ({ units }) => {
             {units && units.map((unit, index) => (
                 <TouchableOpacity style={styles.card} key={index} onPress={() => router.push({
                     pathname: '/(Units)/unit',
-                    params: { unit: JSON.stringify(unit) }
+                    params: {
+                        unitString: JSON.stringify(unit)
+                    }
                 })}>
                     <ImageBackground source={{ uri: `${unit.images[0]}` }} style={styles.imageBg}>
                         <View style={styles.headerCard}>

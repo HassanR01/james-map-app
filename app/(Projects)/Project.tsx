@@ -1,7 +1,6 @@
 import { Dimensions, Image, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import { router, Stack, useLocalSearchParams } from 'expo-router'
-import YoutubePlayer from "react-native-youtube-iframe";
 import { Project, useDataContext } from '@/components/context/DataContext'
 import { ConstantStyles } from '@/constants/Styles'
 import ImagesSlider from '@/components/views/ImagesSlider'
