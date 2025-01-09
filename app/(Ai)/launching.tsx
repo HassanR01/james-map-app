@@ -15,11 +15,11 @@ export default function Launching() {
     const [language, setLanguage] = useState('en')
 
     const SpeechText = async () => {
-        const text = 'Welcome to James Map, How can I help you today?'
+        const text = 'مرحباً بك في جيمس ماب كيف يمكنني مساعدتك اليوم ؟'
         try {
             const options = {
-                voice: 'com.apple.voice.compact.en-US.Samantha',
-                language: 'en-US',
+                voice: 'com.apple.voice.compact.ar-001.Maged',
+                language: 'ar-EG',
                 pitch: 1,
                 rate: 1.1,
             }

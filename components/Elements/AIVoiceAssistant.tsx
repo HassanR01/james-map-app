@@ -8,6 +8,7 @@ import { Colors } from '@/constants/Colors'
 import axios from 'axios'
 import LottieView from 'lottie-react-native'
 import { router } from 'expo-router'
+import { Fonts } from '@/constants/Fonts'
 
 export default function AIVoiceAssistant() {
     const [text, setText] = useState('')
@@ -17,6 +18,8 @@ export default function AIVoiceAssistant() {
     const [aiResponse, setAiResponse] = useState(false)
 
     const [conversationHistory, setConversationHistory] = useState<{ role: string, content: string }[]>([])
+
+    const API_KEY = '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'
 
     useEffect(() => {
         if (text) {
@@ -31,7 +34,7 @@ export default function AIVoiceAssistant() {
                 messages: [
                     {
                         role: 'system',
-                        content: 'You are James, a real estate consultant In Egypt and different places around the world who responds to customer inquiries friendly and helpful and refers to yourself as James when speaking to customers and when someone asks for your name, and you just respond in English, and you are a real estate consultant who is always available to help customers find their dream home, funny and friendly, you answer questions clearly and shortly.'
+                        content: 'You are James, a real estate consultant in Egypt and different places around the world who responds to customer inquiries in a friendly and helpful manner. You refer to yourself as James when speaking to customers and respond in both English and Arabic with a good accent. You are always available to help customers find their dream home, and you answer questions clearly and shortly.'
                     },
                     ...conversationHistory,
                     {
@@ -54,8 +57,6 @@ export default function AIVoiceAssistant() {
             console.log(error)
         }
     }
-
-    const API_KEY = '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'
 
     const getMicrophonePermission = async () => {
         try {
@@ -147,7 +148,6 @@ export default function AIVoiceAssistant() {
                 name: 'recording.wav'
             })
             formData.append('model', 'whisper-1')
-            formData.append('language', 'en') // Specify English language
 
             const response = await axios.post('https://api.openai.com/v1/audio/transcriptions', formData, {
                 headers: {
@@ -162,40 +162,11 @@ export default function AIVoiceAssistant() {
         }
     }
 
-    // const sendToGPT = async (text: string) => {
-    //     try {
-    //         const response = await axios.post('https://api.openai.com/v1/chat/completions', {
-    //             model: 'gpt-4',
-    //             messages: [
-    //                 {
-    //                     role: 'system',
-    //                     content: 'You are James, a real estate consultant who responds to customer inquiries friendly and helpful and refers to yourself as James when speaking to customers and when someone asks for your name, and you just respond in English, and you are a real estate consultant who is always available to help customers find their dream home, funny and friendly.'
-    //                 },
-    //                 {
-    //                     role: 'user',
-    //                     content: text
-    //                 }
-    //             ]
-    //         }, {
-    //             headers: {
-    //                 Authorization: `Bearer ${API_KEY}`,
-    //                 'Content-Type': 'application/json'
-    //             }
-    //         }
-    //         )
-    //         setText(response.data.choices[0].message.content)
-    //         setLoading(false)
-    //         return response.data.choices[0].message.content
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-    // }
-
     const speakText = async (text: string) => {
         try {
             const options = {
-                voice: 'com.apple.voice.compact.en-US.Samantha',
-                language: 'en-US',
+                voice: 'com.apple.voice.compact.ar-001.Maged',
+                language: 'ar-EG',
                 pitch: 1,
                 rate: 1.1,
             }
@@ -203,24 +174,15 @@ export default function AIVoiceAssistant() {
             Speech.speak(text, {
                 ...options,
                 onDone: () => {
-                    (async () => {
-                        if (text.includes('properties')) {
-                            router.push('/(tabs)')
-                            setIsRecording(false)
-                            setLoading(false)
-                            setAiResponse(false)
-                        } else {
-                            if (text.toLowerCase().includes('stop'.toLocaleLowerCase()) || text.toLowerCase().includes('Thank you.'.toLocaleLowerCase())) {
-                                setIsRecording(false)
-                                setLoading(false)
-                                setAiResponse(false)
-                                return
-                            } else {
-                                await startRecording()
-                            }
-                        }
-                    })();
-                }
+                    setAiResponse(false)
+                    setIsRecording(false)
+                    setLoading(false)
+                },
+                onError: () => {
+                    setAiResponse(false)
+                    setIsRecording(false)
+                    setLoading(false)
+                },
             })
 
         } catch (error) {
@@ -228,18 +190,17 @@ export default function AIVoiceAssistant() {
         }
     }
 
-
     // useEffect(() => {
-    //     const avi = async () => {
-    //         const voices = await Speech.getAvailableVoicesAsync()
+    //     Speech.getAvailableVoicesAsync().then(voices => {
     //         console.log(voices)
+
     //     }
-    //     avi()
-    // })
+    //     )
+    // }, [])
 
     return (
         <>
-            <Animated.View entering={FadeInDown.duration(1000).delay(800)}>
+            <Animated.View entering={FadeInDown.duration(1000).delay(800)} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                 {loading ? (
                     <>
                         <TouchableOpacity
@@ -325,6 +286,17 @@ export default function AIVoiceAssistant() {
 
                 )
                 }
+                {/* text */}
+                <View style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginVertical: 10,
+                    paddingHorizontal: 20,
+                }}>
+                    <Text style={{ color: Colors.light.background, fontSize: 18, fontFamily: Fonts.Arabic.medium, textAlign: 'center' }}>{text}</Text>
+                </View>
             </Animated.View >
         </>
     )

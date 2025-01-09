@@ -16,6 +16,11 @@ export default function RootLayout() {
     "Fustat-Medium": require('./../assets/fonts/Fustat-Medium.ttf'),
     "Fustat-Regular": require('./../assets/fonts/Fustat-Regular.ttf'),
     "Fustat-Light": require('./../assets/fonts/Fustat-Light.ttf'),
+    "Rubik-Bold": require('./../assets/fonts/Rubik-Bold.ttf'),
+    "Rubik-Medium": require('./../assets/fonts/Rubik-Medium.ttf'),
+    "Rubik-Regular": require('./../assets/fonts/Rubik-Regular.ttf'),
+    "Rubik-Light": require('./../assets/fonts/Rubik-Light.ttf'),
+    "Rubik-Black": require('./../assets/fonts/Rubik-Black.ttf'),
   })
 
   useEffect(() => {
