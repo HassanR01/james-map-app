@@ -1,16 +1,21 @@
-import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Dimensions, Image, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import { router, Stack, useLocalSearchParams } from 'expo-router'
+import YoutubePlayer from "react-native-youtube-iframe";
 import { Project, useDataContext } from '@/components/context/DataContext'
 import { ConstantStyles } from '@/constants/Styles'
 import ImagesSlider from '@/components/views/ImagesSlider'
 import { Colors } from '@/constants/Colors'
 import { Fonts } from '@/constants/Fonts'
+import { Ionicons } from '@expo/vector-icons'
+import YoutubeIframe from 'react-native-youtube-iframe';
 
 
 export default function ProjectScreen() {
   const { projectString } = useLocalSearchParams<{ projectString: string }>()
   const [project, setProject] = useState<Project>(projectString ? JSON.parse(projectString) : null)
+  const [openMasterPlan, setOpenMasterPlan] = useState(false)
+  const [openVideo, setOpenVideo] = useState(false)
 
   const { projects, developers, units, zones } = useDataContext()
 
@@ -31,7 +36,7 @@ export default function ProjectScreen() {
       const years = plan.payYears
       const monthly = remaining / (years * 12)
       return monthly.toLocaleString()
-    } 
+    }
 
     return (
       <>
@@ -65,7 +70,7 @@ export default function ProjectScreen() {
 
           {/* Video And MasterPlan */}
           <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginVertical: 10 }}>
-            <TouchableOpacity style={{
+            <TouchableOpacity onPress={() => setOpenVideo(true)} style={{
               borderWidth: 1,
               borderColor: Colors.light.tint,
               width: '45%',
@@ -77,7 +82,7 @@ export default function ProjectScreen() {
             }}>
               <Text style={{ fontSize: 16, fontFamily: Fonts.family.bold, color: Colors.light.tint }}>Video</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={{
+            <TouchableOpacity onPress={() => setOpenMasterPlan(true)} style={{
               borderWidth: 1,
               borderColor: Colors.light.tint,
               width: '45%',
@@ -90,7 +95,7 @@ export default function ProjectScreen() {
               <Text style={{ fontSize: 16, fontFamily: Fonts.family.bold, color: Colors.light.tint }}>Master Plan</Text>
             </TouchableOpacity>
           </View>
-          
+
           {/* payment Plans */}
           <View style={{
             display: 'flex',
@@ -117,7 +122,7 @@ export default function ProjectScreen() {
               borderRadius: 10,
               marginBottom: 10,
             }} key={index}>
-              <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center'}}>
+              <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
                 <Text style={[ConstantStyles.text, { fontSize: 16, fontFamily: Fonts.family.bold, color: Colors.light.background, marginHorizontal: 5 }]}>{plan.downpayment}%</Text>
                 <Text style={[ConstantStyles.text, { fontSize: 14, color: Colors.light.background }]}>/ {plan.payYears} years</Text>
               </View>
@@ -195,6 +200,54 @@ export default function ProjectScreen() {
           ))}
 
         </ScrollView>
+
+        {openMasterPlan && (
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={openMasterPlan}
+            onRequestClose={() => setOpenMasterPlan(false)}
+          >
+            <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+              <View style={{ width: '90%', height: '90%', backgroundColor: 'white', borderRadius: 10, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                <Image source={{ uri: project.masterPlan }} style={{ width: '100%', height: '100%', borderRadius: 10 }} />
+                <TouchableOpacity onPress={() => setOpenMasterPlan(false)} style={{ position: 'absolute', top: 10, right: 10, width: 50, height: 50, borderRadius: 10, backgroundColor: 'red', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                  <Text style={{ fontSize: 20, color: 'white', fontFamily: Fonts.family.bold }}>
+                    <Ionicons name="close-outline" size={30} color="white" />
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
+        )}
+
+        {openVideo && (
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={openVideo}
+            onRequestClose={() => setOpenVideo(false)}
+          >
+            <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+              <View style={{ width: '90%', backgroundColor: 'white', borderRadius: 10, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+
+                <YoutubeIframe
+                  play={true}
+                  videoId={project.video}
+                  height={200}
+                  width={Dimensions.get('window').width - 40}
+                  webViewStyle={{ borderRadius: 10 }}
+                />
+
+              </View>
+              <TouchableOpacity onPress={() => setOpenVideo(false)} style={{ position: 'absolute', top: 50, right: 20, width: 50, height: 50, borderRadius: 10, backgroundColor: 'red', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ fontSize: 20, color: 'white', fontFamily: Fonts.family.bold }}>
+                  <Ionicons name="close-outline" size={30} color="white" />
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+        )}
       </>
     )
   }

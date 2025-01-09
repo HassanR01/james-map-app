@@ -7,6 +7,7 @@ import { AntDesign, FontAwesome, Ionicons, MaterialIcons } from '@expo/vector-ic
 import { router } from 'expo-router'
 import { useDataContext, Unit } from '@/components/context/DataContext'
 import Units from '@/components/Data/Units'
+import LoadingPage from '@/components/views/LoadingPage'
 
 export default function Home() {
   const [filter, setFilter] = useState('')
@@ -146,7 +147,7 @@ export default function Home() {
   })
 
   if (!units || !projects || !developers || !zones) {
-    return <Text>Loading...</Text>
+    return <LoadingPage />
   } else {
 
 

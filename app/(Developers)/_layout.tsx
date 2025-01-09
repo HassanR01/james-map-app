@@ -13,6 +13,9 @@ export default function Layout() {
                 </TouchableOpacity>
             )
         }
-    }} />
+    }} >
+      <Stack.Screen name='index' />
+      <Stack.Screen name="developer" />
+    </Stack>
   )
 }

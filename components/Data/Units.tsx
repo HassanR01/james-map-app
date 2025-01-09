@@ -9,7 +9,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 interface UnitsProps {
     units: {
-        _id: number;
+        _id: string;
         title: string;
         description: string;
         keywords: string;
