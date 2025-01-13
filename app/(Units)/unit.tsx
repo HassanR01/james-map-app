@@ -25,8 +25,14 @@ export default function Unit() {
     const projectOfUnit = projects.find(project => project.title === unit.project)
     const projectUnits = units.filter(unit => unit.project === projectOfUnit?.title)
     const developerOfUnit = developers.find(developer => developer.name === unit.developer)
+    const projectsOfDeveloper = projects.filter(project => project.developer === developerOfUnit?.name)
     const lengthOfDeveloperProjects = projects.filter(project => project.developer === developerOfUnit?.name).length
     const lengthOfDeveloperUnits = projects.filter(project => project.developer === developerOfUnit?.name).length
+
+    const ProjectUnits = (project: Project) => {
+      const unitsofProject = units.filter(unit => unit.project === project.title)
+      return unitsofProject.length
+    }
 
     const MonthlyPayment = (project: any) => {
       const plan = project.paymentPlans[0]
@@ -154,7 +160,7 @@ export default function Unit() {
             <Text style={[ConstantStyles.text, { fontSize: 16, fontFamily: Fonts.family.regular, marginHorizontal: 10 }]}>{unit.descriptionEn}</Text>
 
 
-            {/* project Units */}
+            {/* projects of Developer */}
 
             <View style={{
               display: 'flex',
@@ -165,16 +171,16 @@ export default function Unit() {
               marginVertical: 10,
             }}>
               <View style={styles.line} />
-              <Text style={{ color: Colors.light.text, fontSize: 18, fontFamily: Fonts.family.medium }}>{projectUnits.length} Units</Text>
+              <Text style={{ color: Colors.light.text, fontSize: 18, fontFamily: Fonts.family.medium }}>{projectsOfDeveloper.length} Projects</Text>
               <View style={styles.line} />
             </View>
 
-            {projectUnits && projectUnits.map((unit, index) => (
+            {projectsOfDeveloper && projectsOfDeveloper.map((project, index) => (
               <TouchableOpacity
-                onPress={() => router.push({
-                  pathname: '/(Units)/unit',
+                onPress={() => router.navigate({
+                  pathname: '/(Projects)/Project',
                   params: {
-                    unitString: JSON.stringify(unit)
+                    projectString: JSON.stringify(project)
                   }
                 })}
                 style={{
@@ -191,7 +197,7 @@ export default function Unit() {
                 }}
                 key={index}
               >
-                <Image source={{ uri: `${unit.images[0]}` }} style={{ width: 50, height: 50, borderRadius: 10 }} />
+                <Image source={{ uri: `${project.images[0]}` }} style={{ width: 50, height: 50, borderRadius: 10 }} />
                 <View style={{
                   display: 'flex',
                   flexDirection: 'column',
@@ -199,8 +205,8 @@ export default function Unit() {
                   alignItems: 'flex-start',
                   width: '80%',
                 }}>
-                  <Text style={[ConstantStyles.h3, { fontSize: 16, fontFamily: Fonts.family.bold, textAlign: 'left' }]}>{unit.title.split(' ').slice(0, 12).join(' ')}..</Text>
-                  <Text style={[ConstantStyles.text, { fontSize: 14, color: 'gray' }]}>{unit.title.split(' ')[0]} - {unit.area} m²</Text>
+                  <Text style={[ConstantStyles.h3, { fontSize: 16, fontFamily: Fonts.family.bold, textAlign: 'left' }]}>{project.title.split(' ').slice(0, 12).join(' ')}..</Text>
+                  <Text style={[ConstantStyles.text, { fontSize: 14, color: 'gray' }]}>{developerOfUnit?.name} - {ProjectUnits(project)} units</Text>
                 </View>
               </TouchableOpacity>
             ))}
