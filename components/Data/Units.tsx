@@ -59,9 +59,17 @@ const Units: React.FC<UnitsProps> = ({ units }) => {
         return monthlyPayment;
     };
 
+    const UnitsRight = units.filter(unit => {
+        const haveDownpayment = unit.paymentPlans[0] !== undefined;
+        if (!unit.paymentPlans[0].downpayment) {
+            console.log(unit.title, 'has no downpayment');
+        }
+        return haveDownpayment
+    }) 
+
     return (
         <>
-            {units && units.map((unit, index) => (
+            {UnitsRight && UnitsRight.map((unit, index) => (
                 <TouchableOpacity style={styles.card} key={index} onPress={() => router.push({
                     pathname: '/(Units)/unit',
                     params: {
