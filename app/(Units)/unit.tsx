@@ -10,6 +10,8 @@ import { FontAwesome, Ionicons, MaterialIcons, Octicons } from '@expo/vector-ico
 import YoutubeIframe from 'react-native-youtube-iframe';
 import LoadingPage from '@/components/views/LoadingPage'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { printToFileAsync } from 'expo-print'
+import { shareAsync } from 'expo-sharing'
 import { Alert } from 'react-native'
 
 export default function Unit() {
@@ -18,6 +20,102 @@ export default function Unit() {
   const [openVideo, setOpenVideo] = useState(false)
   const [openLayout, setOpenLayout] = useState(false)
   const [paymentPlanChoosen, setPaymentPlanChoosen] = useState(Object)
+
+  const MonthlyPayment = (project: any) => {
+    const plan = project.paymentPlans[0]
+    const downpayment = project.startBudget * (plan.downpayment / 100)
+    const remaining = project.startBudget - downpayment
+    const years = plan.payYears
+    const quarterly = Math.trunc(remaining / (years * 4))
+    return quarterly.toLocaleString()
+  }
+
+  const payments: { installmentType: string; date: string; amount: string | number }[] = []
+
+  for (let i = 1; i <= paymentPlanChoosen.payYears * 4; i++) {
+    const payment = {
+      installmentType: `${i === 1 ? `Down Payment ${paymentPlanChoosen.downpayment}%` : `Installment ${i}`}`,
+      date: new Date(new Date().setMonth(new Date().getMonth() + (i * 3))).toLocaleDateString(),
+      amount: `${i === 1 ? Math.trunc(unit.startBudget * (paymentPlanChoosen.downpayment / 100)).toLocaleString() : MonthlyPayment(unit)} EGP`,
+    }
+    payments.push(payment)
+  }
+
+  const html = `
+    <html>
+      <head>
+        <style>
+          body {
+            font-size: 20px;
+            font-family: Arial, sans-serif;
+          }
+          table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+          }
+
+          td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+          }
+
+          tr:nth-child(even) {
+            background-color: #dddddd;
+          }
+          .header {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+            width: 100%;
+            padding: 10px 0;
+          }
+          h2, h3, h4, p {
+            margin: 0;
+            padding: 0;
+          }
+        </style>
+      </head>
+      <body>
+      <div class="header">
+        <img src="https://res.cloudinary.com/db152mwtg/image/upload/v1736867510/James%20Map/logo/s6k6rrlgdgifhtjb0bha.png" style="width: 110px; height: 110px;" />
+        <div>
+          <h2>James Map</h2>
+          <h3>Payment Plan ${unit?.project}</h3>
+          <p>${unit?.title.split(' ').slice(0, 1)} - ${unit?.area} m²</p>
+        </div>
+      </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Payment</th>
+              <th>Date</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${payments.map(payment => `
+              <tr>
+                <td>${payment.installmentType}</td>
+                <td>${payment.date}</td>
+                <td>${payment.amount}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+      </body>
+    </html>
+  `
+
+  const PrintPaymentplan = async () => {
+    const file = await printToFileAsync({
+      html,
+      base64: false,
+    })
+
+    await shareAsync(file.uri, { UTI: '.pdf', mimeType: 'application/pdf' })
+  }
 
   const { projects, developers, units } = useDataContext()
   if (!unit || !projects || !developers || !units) {
@@ -35,15 +133,6 @@ export default function Unit() {
     const ProjectUnits = (project: Project) => {
       const unitsofProject = units.filter(unit => unit.project === project.title)
       return unitsofProject.length
-    }
-
-    const MonthlyPayment = (project: any) => {
-      const plan = project.paymentPlans[0]
-      const downpayment = project.startBudget * (plan.downpayment / 100)
-      const remaining = project.startBudget - downpayment
-      const years = plan.payYears
-      const monthly = remaining / (years * 12)
-      return monthly.toLocaleString()
     }
 
     const addToComparisons = async () => {
@@ -75,7 +164,7 @@ export default function Unit() {
         <ScrollView style={ConstantStyles.scrollViewTag}>
           <ImagesSlider images={unit.images} />
           <View style={styles.projectInfo}>
-            <Text style={[ConstantStyles.h1, { fontSize: 20, marginHorizontal: 5, textAlign: 'left' }]}>{unit.title}</Text>
+            <Text style={[ConstantStyles.h1, { fontSize: 20, textAlign: 'left' }]}>{unit.title}</Text>
             <Text style={ConstantStyles.text}>Area: {unit.area} m²</Text>
             <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
               {/* Unit Data */}
@@ -140,7 +229,7 @@ export default function Unit() {
             <Text style={{ color: Colors.light.text, fontSize: 18, fontFamily: Fonts.family.medium }}>Payment Plans</Text>
             <View style={[styles.line, { width: '28%' }]} />
           </View>
-          <Text style={[ConstantStyles.text, {marginBottom: 10}]}>Choose Yours</Text>
+          <Text style={[ConstantStyles.text, { marginBottom: 10 }]}>Choose Yours</Text>
           {projectOfUnit?.paymentPlans && projectOfUnit.paymentPlans.map((plan, index) => (
             <TouchableOpacity style={{
               display: 'flex',
@@ -171,46 +260,49 @@ export default function Unit() {
             <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginVertical: 10 }}>
               <Text style={[ConstantStyles.h3]}>Actions</Text>
               <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', width: '100%', flexWrap: 'wrap', marginVertical: 10 }}>
-                <TouchableOpacity style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  width: '45%',
-                  padding: 10,
-                  backgroundColor: Colors.light.tint,
-                  borderRadius: 10,
-                  margin: 5
-                }}>
+                <TouchableOpacity
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    width: '45%',
+                    padding: 10,
+                    backgroundColor: Colors.light.tint,
+                    borderRadius: 10,
+                    margin: 5
+                  }}>
                   <Text style={{ fontSize: 16, color: Colors.light.background, fontFamily: Fonts.family.bold }}>Book Now</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  width: '45%',
-                  padding: 10,
-                  backgroundColor: Colors.light.icon,
-                  borderRadius: 10,
-                  margin: 5
-                }}>
+                <TouchableOpacity
+                  onPress={PrintPaymentplan}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    width: '45%',
+                    padding: 10,
+                    backgroundColor: Colors.light.icon,
+                    borderRadius: 10,
+                    margin: 5
+                  }}>
                   <Text style={{ fontSize: 16, color: Colors.light.background, fontFamily: Fonts.family.bold }}>Download Payment</Text>
                 </TouchableOpacity>
                 {/* Comparison with other unit */}
-                <TouchableOpacity 
+                <TouchableOpacity
                   onPress={addToComparisons}
                   style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  width: '95%',
-                  padding: 10,
-                  backgroundColor: Colors.light.icon,
-                  borderRadius: 10,
-                  margin: 5
-                }}>
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    width: '95%',
+                    padding: 10,
+                    backgroundColor: Colors.light.icon,
+                    borderRadius: 10,
+                    margin: 5
+                  }}>
                   <Text style={{ fontSize: 16, color: Colors.light.background, fontFamily: Fonts.family.bold, alignItems: 'center', justifyContent: 'center', display: 'flex' }}><Octicons name="git-compare" size={18} /> Compare with other units</Text>
                 </TouchableOpacity>
               </View>
@@ -345,6 +437,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
+    paddingHorizontal: 5,
   },
   line: {
     height: 0.5,
