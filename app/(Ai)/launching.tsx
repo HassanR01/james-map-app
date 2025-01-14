@@ -114,7 +114,7 @@ export default function Launching() {
                             <Text style={styles.iconText}>Investment</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity onPress={() => router.push('/(tabs)')} style={styles.IconCont}>
+                        <TouchableOpacity onPress={() => router.push('/(supPages)/Comparizone')} style={styles.IconCont}>
                             <View style={styles.icon}>
                                 <Octicons name="git-compare" size={24} color="black" />
                             </View>
