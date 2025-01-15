@@ -141,7 +141,12 @@ export default function Comparizone() {
                                     <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'flex-start', width: '100%' }}>
                                         <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
                                             {/* Unit In Maps , Unit Details , Remove Unit From List */}
-                                            <TouchableOpacity style={styles.Icons}>
+                                            <TouchableOpacity style={styles.Icons} onPress={() => router.push({
+                                                pathname: '/(Maps)/unit',
+                                                params: {
+                                                    unitString: JSON.stringify(unit)
+                                                }
+                                            })}>
                                                 <MaterialIcons name="location-on" size={24} color={'green'} />
                                             </TouchableOpacity>
                                             <TouchableOpacity style={styles.Icons} onPress={() => router.push({

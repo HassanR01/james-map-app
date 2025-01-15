@@ -34,7 +34,7 @@ export default function Unit() {
 
   for (let i = 1; i <= paymentPlanChoosen.payYears * 4; i++) {
     const payment = {
-      installmentType: `${i === 1 ? `Down Payment ${paymentPlanChoosen.downpayment}%` : `Installment ${i}`}`,
+      installmentType: `${i === 1 ? `Down Payment ${paymentPlanChoosen.downpayment}%` : `Installment ${i - 1}`}`,
       date: new Date(new Date().setMonth(new Date().getMonth() + (i * 3))).toLocaleDateString(),
       amount: `${i === 1 ? Math.trunc(unit.startBudget * (paymentPlanChoosen.downpayment / 100)).toLocaleString() : MonthlyPayment(unit)} EGP`,
     }
@@ -112,6 +112,7 @@ export default function Unit() {
     const file = await printToFileAsync({
       html,
       base64: false,
+      margins: { top: 10, bottom: 10, left: 10, right: 10 },
     })
 
     await shareAsync(file.uri, { UTI: '.pdf', mimeType: 'application/pdf' })
@@ -215,6 +216,31 @@ export default function Unit() {
               <Text style={{ fontSize: 16, fontFamily: Fonts.family.bold, color: Colors.light.tint }}>Layout</Text>
             </TouchableOpacity>
           </View>
+          {/* Map View */}
+          <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: '100%', marginVertical: 10 }}>
+            <TouchableOpacity onPress={() => router.push({
+              pathname: '/(Maps)/unit',
+              params: {
+                unitString: JSON.stringify(unit)
+              }
+            })}
+              style={{
+                borderWidth: 1,
+                borderColor: Colors.light.tint,
+                backgroundColor: 'green',
+                width: '100%',
+                padding: 5,
+                display: 'flex',
+                justifyContent: 'center',
+                flexDirection: 'row',
+                alignItems: 'center',
+                borderRadius: 5,
+              }}>
+              <MaterialIcons name="location-on" size={24} color={Colors.light.background} />
+              <Text style={{ fontSize: 20, fontFamily: Fonts.family.bold, color: Colors.light.background }}>View in Maps</Text>
+            </TouchableOpacity>
+          </View>
+
 
           {/* payment Plans */}
           <View style={{
@@ -387,8 +413,8 @@ export default function Unit() {
             onRequestClose={() => setOpenLayout(false)}
           >
             <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
-              <View style={{ width: '90%', height: '90%', backgroundColor: 'white', borderRadius: 10, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                <Image source={{ uri: unit.layout }} style={{ width: '100%', height: '100%', borderRadius: 10 }} />
+              <View style={{ width: '90%', height: 400, backgroundColor: 'white', borderRadius: 10, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                <Image source={{ uri: unit.layout }} style={{ width: Dimensions.get('window').width - 40, borderRadius: 10, height: 400 }} />
                 <TouchableOpacity onPress={() => setOpenLayout(false)} style={{ position: 'absolute', top: 10, right: 10, width: 50, height: 50, borderRadius: 10, backgroundColor: 'red', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                   <Text style={{ fontSize: 20, color: 'white', fontFamily: Fonts.family.bold }}>
                     <Ionicons name="close-outline" size={30} color="white" />
