@@ -433,13 +433,13 @@ export default function Unit() {
             onRequestClose={() => setOpenVideo(false)}
           >
             <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
-              <View style={{ width: '90%', backgroundColor: 'white', borderRadius: 10, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+              <View style={{ width: Dimensions.get('window').width - 20, backgroundColor: 'white', borderRadius: 10, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
 
                 <YoutubeIframe
                   play={true}
                   videoId={unit.video}
-                  height={200}
-                  width={Dimensions.get('window').width - 40}
+                  height={250}
+                  width={Dimensions.get('window').width - 20}
                   webViewStyle={{ borderRadius: 10 }}
                 />
 

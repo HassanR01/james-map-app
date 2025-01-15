@@ -233,7 +233,7 @@ export default function ProjectScreen() {
                 <YoutubeIframe
                   play={true}
                   videoId={project.video}
-                  height={200}
+                  height={230}
                   width={Dimensions.get('window').width - 40}
                   webViewStyle={{ borderRadius: 10 }}
                 />
