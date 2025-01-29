@@ -1,5 +1,6 @@
 import { createContext, useState, Dispatch, SetStateAction, useEffect, useContext, ReactNode } from "react";
 import axios from "axios";
+import Constants from 'expo-constants'
 
 export interface Developer {
     _id: string;
@@ -148,11 +149,11 @@ export default function DataProvider({ children }: { children: ReactNode }) {
         const fetchData = async () => {
             try {
                 const [resDev, resUnits, resProjects, resZones, resUsers] = await Promise.all([
-                    axios.get<Developer[]>('http://172.20.10.2:5000/api/v1/developers/get-developers'),
-                    axios.get<Unit[]>('http://172.20.10.2:5000/api/v1/units/get-units'),
-                    axios.get<Project[]>('http://172.20.10.2:5000/api/v1/projects/get-projects'),
-                    axios.get<Zone[]>('http://172.20.10.2:5000/api/v1/zones/get-zones'),
-                    axios.get<User[]>('http://172.20.10.2:5000/api/v1/users/get-users'),
+                    axios.get<Developer[]>(`${Constants.expoConfig?.extra?.API_URL}/developers/get-developers`),
+                    axios.get<Unit[]>(`${Constants.expoConfig?.extra?.API_URL}/units/get-units`),
+                    axios.get<Project[]>(`${Constants.expoConfig?.extra?.API_URL}/projects/get-projects`),
+                    axios.get<Zone[]>(`${Constants.expoConfig?.extra?.API_URL}/zones/get-zones`),
+                    axios.get<User[]>(`${Constants.expoConfig?.extra?.API_URL}/users/get-users`),
                 ]);
 
                 setDevelopers(resDev.data);
