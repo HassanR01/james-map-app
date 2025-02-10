@@ -3,10 +3,14 @@ import React from 'react'
 import MapView, { Marker, PROVIDER_DEFAULT, PROVIDER_GOOGLE } from 'react-native-maps'
 import { Ionicons } from '@expo/vector-icons';
 import { router, useLocalSearchParams } from 'expo-router';
+ 
 
 export default function MapZone() {
   const { coordinates } = useLocalSearchParams()
   const coords = typeof coordinates === 'string' ? JSON.parse(coordinates) : null
+  
+
+
 
   if (!coords) {
     return (
@@ -15,6 +19,8 @@ export default function MapZone() {
       </View>
     )
   } else {
+
+
 
     return (
       <View style={styles.container}>

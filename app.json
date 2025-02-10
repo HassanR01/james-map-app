@@ -6,7 +6,7 @@
       "ios",
       "android"
     ],
-    "version": "1.0.0",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -20,6 +20,7 @@
       }
     },
     "android": {
+      "versionCode": 26,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -69,7 +70,7 @@
       "eas": {
         "projectId": "3d75fa5d-581e-45dd-9b16-b9d67bd43f77"
       },
-      "API_URL" : "https://server.jamesmap.com/api/v1"
+      "API_URL": "https://server.jamesmap.com/api/v1"
     }
   }
 }
