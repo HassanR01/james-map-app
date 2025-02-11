@@ -6,7 +6,7 @@ import { ConstantStyles } from '@/constants/Styles'
 import ImagesSlider from '@/components/views/ImagesSlider'
 import { Colors } from '@/constants/Colors'
 import { Fonts } from '@/constants/Fonts'
-import { Ionicons } from '@expo/vector-icons'
+import { Ionicons, MaterialIcons } from '@expo/vector-icons'
 import YoutubeIframe from 'react-native-youtube-iframe';
 
 
@@ -51,7 +51,7 @@ export default function ProjectScreen() {
         <ScrollView style={[ConstantStyles.scrollViewTag, { paddingBottom: 20 }]}>
           <ImagesSlider images={project.images} />
           <View style={styles.projectInfo}>
-            <Text style={[ConstantStyles.h1, { fontSize: 20, marginHorizontal: 5 }]}>{project.title} - {project.zone}</Text>
+            <Text style={[ConstantStyles.h1, { fontSize: 20, marginHorizontal: 5, textAlign: 'left' }]}>{project.title} - {project.zone}</Text>
             <Text style={ConstantStyles.text}>Start Price: {project.startBudget.toLocaleString()} EGP</Text>
             <TouchableOpacity style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', marginVertical: 10 }} onPress={() => router.push({
               pathname: '/(Developers)/developer',
@@ -92,6 +92,29 @@ export default function ProjectScreen() {
               borderRadius: 5,
             }}>
               <Text style={{ fontSize: 16, fontFamily: Fonts.family.bold, color: Colors.light.tint }}>Master Plan</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: '100%', marginVertical: 10 }}>
+            <TouchableOpacity onPress={() => router.push({
+              pathname: '/(Maps)/project',
+              params: {
+                projectString: JSON.stringify(project)
+              }
+            })}
+              style={{
+                borderWidth: 1,
+                borderColor: Colors.light.tint,
+                backgroundColor: 'green',
+                width: '100%',
+                padding: 5,
+                display: 'flex',
+                justifyContent: 'center',
+                flexDirection: 'row',
+                alignItems: 'center',
+                borderRadius: 5,
+              }}>
+              <MaterialIcons name="location-on" size={24} color={Colors.light.background} />
+              <Text style={{ fontSize: 20, fontFamily: Fonts.family.bold, color: Colors.light.background }}>View in Maps</Text>
             </TouchableOpacity>
           </View>
 
@@ -208,8 +231,8 @@ export default function ProjectScreen() {
             onRequestClose={() => setOpenMasterPlan(false)}
           >
             <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
-              <View style={{ width: '90%', height: '90%', backgroundColor: 'white', borderRadius: 10, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                <Image source={{ uri: project.masterPlan }} style={{ width: '100%', height: '100%', borderRadius: 10 }} />
+              <View style={{ width: '90%', height: '50%', backgroundColor: 'white', borderRadius: 10, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                <Image source={{ uri: project.masterPlan }} style={{ width: Dimensions.get('window').width - 40, height: 200, borderRadius: 10 }} />
                 <TouchableOpacity onPress={() => setOpenMasterPlan(false)} style={{ position: 'absolute', top: 10, right: 10, width: 50, height: 50, borderRadius: 10, backgroundColor: 'red', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                   <Text style={{ fontSize: 20, color: 'white', fontFamily: Fonts.family.bold }}>
                     <Ionicons name="close-outline" size={30} color="white" />

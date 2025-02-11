@@ -55,7 +55,7 @@ export interface Project {
     description: string;
     keywords: string;
     images: string[];
-    location: [];
+    location: number[];
     article: string;
     developer: string;
     zone: string;

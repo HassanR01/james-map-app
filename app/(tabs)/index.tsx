@@ -191,8 +191,7 @@ export default function Home() {
               <TouchableOpacity style={styles.centerEle} onPress={() => router.navigate({
                 pathname: '/(Search)/SearchResults',
                 params: {
-                  searchFilter: item.name,
-                  type: item.type,
+                  filter: JSON.stringify({unittype: item.type})
                 }
               })}>
                 <Image source={item.image} style={styles.iconUnit} />

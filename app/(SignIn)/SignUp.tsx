@@ -1,4 +1,4 @@
-import { KeyboardAvoidingView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Alert, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useRef, useState } from 'react'
 import { LinearGradient } from 'expo-linear-gradient'
 import { Colors } from '@/constants/Colors'
@@ -8,6 +8,8 @@ import { Fonts } from '@/constants/Fonts'
 import { FontAwesome5, MaterialIcons } from '@expo/vector-icons'
 import { Image } from 'react-native'
 import { router } from 'expo-router'
+import axios from 'axios'
+import Constants from 'expo-constants'
 
 export default function SignUp() {
   const [email, setEmail] = useState('')
@@ -17,6 +19,50 @@ export default function SignUp() {
   const [alert, setAlert] = useState('')
   const animation = useRef<LottieView>(null)
 
+  const handleSignUp = async () => {
+    if (email === '') {
+      setAlert('Please Enter Email')
+      return
+    }
+
+    if (username === '') {
+      setAlert('Please Enter Username')
+      return
+    }
+
+    if (password === '') {
+      setAlert('Please Enter Password')
+      return
+    }
+
+    if (confirmPassword === '') {
+      setAlert('Please Enter Confirm Password')
+      return
+    }
+
+    if (password !== confirmPassword) {
+      setAlert('Password and Confirm Password must be same')
+      return
+    }
+
+    setAlert('Processing...')
+
+    try {
+      await axios.post(`${Constants.expoConfig?.extra?.API_URL}/users/register`, {
+        username, password, email
+      }).then(res => {
+        if (res.data.message == 'User created') {
+          setAlert('User Registered Successfully')
+          router.replace('/(SignIn)/LogIn')
+        } else {
+          Alert.alert('User Already Exist', res.data.message)
+          setAlert('')
+        }
+      })
+    } catch (error) {
+      setAlert('Error Occured')
+    }
+  }
 
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior='padding'>
@@ -60,6 +106,8 @@ export default function SignUp() {
             <MaterialIcons name="alternate-email" size={24} color="gray" />
             <TextInput
               style={ConstantStyles.inputs}
+              value={email}
+              onChangeText={text => setEmail(text)}
               placeholder='Email'
               placeholderTextColor={'gray'}
               keyboardType='email-address'
@@ -72,6 +120,8 @@ export default function SignUp() {
               style={ConstantStyles.inputs}
               placeholder='Username'
               placeholderTextColor={'gray'}
+              value={username}
+              onChangeText={text => setUsername(text)}
             />
           </View>
 
@@ -82,6 +132,8 @@ export default function SignUp() {
               placeholder='Password'
               placeholderTextColor={'gray'}
               secureTextEntry
+              value={password}
+              onChangeText={text => setPassword(text)}
             />
           </View>
 
@@ -92,6 +144,8 @@ export default function SignUp() {
               placeholder='Confirm Password'
               placeholderTextColor={'gray'}
               secureTextEntry
+              value={confirmPassword}
+              onChangeText={text => setConfirmPassword(text)}
             />
           </View>
 
@@ -100,7 +154,7 @@ export default function SignUp() {
           </View>
 
           <TouchableOpacity
-            onPress={() => { }}
+            onPress={() => handleSignUp()}
             style={{
               width: '100%',
             }}>

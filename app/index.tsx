@@ -5,9 +5,20 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import LoadingPage from "@/components/views/LoadingPage";
 
 export default function Index() {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [Loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
   const [comparisones, setComparisones] = useState([]);
   useEffect(() => {
+
+    const GetUser = async () => {
+      const user = await AsyncStorage.getItem("user");
+      if (user) {
+        setUser(JSON.parse(user));
+      }
+    }
+    
+    
+    
     const GetComparizons = async () => {
       const comparisonesExist = await AsyncStorage.getItem("comparisones");
       if (comparisonesExist) {
@@ -18,15 +29,19 @@ export default function Index() {
     setInterval(() => {
       GetComparizons();
     }, 100);
+    
+    GetUser().finally(() => {
+      setLoading(false);
+    })
   })
 
-  if (comparisones.length > 0) {
+  if (Loading) {
     return <LoadingPage />
   } else {
 
     return (
       <>
-        <Redirect href={loggedIn ? '/(Ai)/launching' : '/(SignIn)'} />
+        <Redirect href={user ? '/(Ai)/launching' : '/(SignIn)'} />
         
       </>
     );

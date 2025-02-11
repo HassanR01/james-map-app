@@ -7,7 +7,8 @@ import { ConstantStyles } from '@/constants/Styles'
 import Units from '@/components/Data/Units'
 
 export default function SearchResults() {
-    const { type } = useLocalSearchParams()
+    const { filter } = useLocalSearchParams()
+    const type = typeof filter === 'string' ? JSON.parse(filter).type : null
     const { units } = useDataContext()
 
     const results = units ? units.filter(unit => {
