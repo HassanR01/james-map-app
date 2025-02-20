@@ -8,7 +8,7 @@ import Units from '@/components/Data/Units'
 
 export default function SearchResults() {
     const { filter } = useLocalSearchParams()
-    const type = typeof filter === 'string' ? JSON.parse(filter).type : null
+    const type = typeof filter === 'string' ? JSON.parse(filter).unittype : null
     const { units } = useDataContext()
 
     const results = units ? units.filter(unit => {
