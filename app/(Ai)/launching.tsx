@@ -102,63 +102,63 @@ export default function Launching() {
                         {/* Icons To App */}
                         <TouchableOpacity onPress={() => router.push('/(tabs)')} style={styles.IconCont}>
                             <View style={styles.icon}>
-                                <AntDesign name="home" size={35} color={Colors.light.tint} />
+                                <AntDesign name="home" size={35} color={'#00008b'} />
                             </View>
                             <Text style={styles.iconText}>Home</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => router.push('/(tabs)')} style={styles.IconCont}>
                             <View style={styles.icon}>
-                                <FontAwesome6 name="money-bill-trend-up" size={35} color={Colors.light.tint} />
+                                <FontAwesome6 name="money-bill-trend-up" size={35} color={'#00008b'} />
                             </View>
                             <Text style={styles.iconText}>Investment</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => router.push('/(supPages)/Comparizone')} style={styles.IconCont}>
                             <View style={styles.icon}>
-                                <Octicons name="git-compare" size={35} color={Colors.light.tint} />
+                                <Octicons name="git-compare" size={35} color={'#00008b'} />
                             </View>
                             <Text style={styles.iconText}>Comparison</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => router.push('/(tabs)/Articles')} style={styles.IconCont}>
                             <View style={styles.icon}>
-                                <MaterialCommunityIcons name="bookshelf" size={35} color={Colors.light.tint} />
+                                <MaterialCommunityIcons name="bookshelf" size={35} color={'#00008b'} />
                             </View>
                             <Text style={styles.iconText}>Articles</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => router.push('/(tabs)/Maps')} style={styles.IconCont}>
                             <View style={styles.icon}>
-                                <FontAwesome6 name="map-location-dot" size={35} color={Colors.light.tint} />
+                                <FontAwesome6 name="map-location-dot" size={35} color={'#00008b'} />
                             </View>
                             <Text style={styles.iconText}>Maps</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => router.push('/(tabs)')} style={styles.IconCont}>
                             <View style={styles.icon}>
-                                <FontAwesome5 name="handshake" size={35} color={Colors.light.tint} />
+                                <FontAwesome5 name="handshake" size={35} color={'#00008b'} />
                             </View>
                             <Text style={styles.iconText}>Barters</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => router.push('/(tabs)')} style={styles.IconCont}>
                             <View style={styles.icon}>
-                                <Fontisto name="ship" size={35} color={Colors.light.tint} />
+                                <Fontisto name="ship" size={35} color={'#00008b'} />
                             </View>
                             <Text style={styles.iconText}>Ships</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => router.push('/(Ai)')} style={styles.IconCont}>
                             <View style={styles.icon}>
-                                <MaterialIcons name="support-agent" size={35} color={Colors.light.tint} />
+                                <MaterialIcons name="support-agent" size={35} color={'#00008b'} />
                             </View>
                             <Text style={styles.iconText}>Supporting</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => router.push('/(tabs)/More')} style={styles.IconCont}>
                             <View style={styles.icon}>
-                                <MaterialCommunityIcons name="information-variant" size={35} color={Colors.light.tint} />
+                                <MaterialCommunityIcons name="information-variant" size={35} color={'#00008b'} />
                             </View>
                             <Text style={styles.iconText}>James</Text>
                         </TouchableOpacity>
@@ -230,8 +230,8 @@ const styles = StyleSheet.create({
     },
     iconText: {
         fontSize: 14,
-        fontFamily: Fonts.family.medium,
-        color: Colors.light.tint,
+        fontFamily: Fonts.family.bold,
+        color: '#00008b',
         textAlign: 'center',
     }
 })
