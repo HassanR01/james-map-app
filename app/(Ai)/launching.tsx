@@ -6,7 +6,6 @@ import { Colors } from '@/constants/Colors'
 import { Dropdown } from 'react-native-element-dropdown'
 import { router } from 'expo-router'
 import { AntDesign, FontAwesome5, FontAwesome6, Fontisto, MaterialCommunityIcons, MaterialIcons, Octicons } from '@expo/vector-icons'
-import { Audio } from 'expo-av'
 import * as Speech from 'expo-speech'
 import AIVoiceAssistant from '@/components/Elements/AIVoiceAssistant'
 
@@ -39,7 +38,6 @@ export default function Launching() {
 
 
     return (
-
         <LinearGradient
             colors={['#00008b', Colors.light.tint]}
             style={{
@@ -53,7 +51,9 @@ export default function Launching() {
             start={{ x: 0, y: -0.2 }}
             end={{ x: 0, y: 1 }}
         >
-            <ScrollView style={{
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                style={{
                 width: '100%',
                 height: '100%',
             }}>
@@ -102,69 +102,67 @@ export default function Launching() {
                         {/* Icons To App */}
                         <TouchableOpacity onPress={() => router.push('/(tabs)')} style={styles.IconCont}>
                             <View style={styles.icon}>
-                                <AntDesign name="home" size={28} color="black" />
+                                <AntDesign name="home" size={35} color={Colors.light.tint} />
                             </View>
                             <Text style={styles.iconText}>Home</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => router.push('/(tabs)')} style={styles.IconCont}>
                             <View style={styles.icon}>
-                                <FontAwesome6 name="money-bill-trend-up" size={24} color="black" />
+                                <FontAwesome6 name="money-bill-trend-up" size={35} color={Colors.light.tint} />
                             </View>
                             <Text style={styles.iconText}>Investment</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => router.push('/(supPages)/Comparizone')} style={styles.IconCont}>
                             <View style={styles.icon}>
-                                <Octicons name="git-compare" size={24} color="black" />
+                                <Octicons name="git-compare" size={35} color={Colors.light.tint} />
                             </View>
                             <Text style={styles.iconText}>Comparison</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => router.push('/(tabs)/Articles')} style={styles.IconCont}>
                             <View style={styles.icon}>
-                                <MaterialCommunityIcons name="bookshelf" size={30} color="black" />
+                                <MaterialCommunityIcons name="bookshelf" size={35} color={Colors.light.tint} />
                             </View>
                             <Text style={styles.iconText}>Articles</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => router.push('/(tabs)/Maps')} style={styles.IconCont}>
                             <View style={styles.icon}>
-                                <FontAwesome6 name="map-location-dot" size={24} color="black" />
+                                <FontAwesome6 name="map-location-dot" size={35} color={Colors.light.tint} />
                             </View>
                             <Text style={styles.iconText}>Maps</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => router.push('/(tabs)')} style={styles.IconCont}>
                             <View style={styles.icon}>
-                                <FontAwesome5 name="handshake" size={24} color="black" />
+                                <FontAwesome5 name="handshake" size={35} color={Colors.light.tint} />
                             </View>
                             <Text style={styles.iconText}>Barters</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => router.push('/(tabs)')} style={styles.IconCont}>
                             <View style={styles.icon}>
-                                <Fontisto name="ship" size={24} color="black" />
+                                <Fontisto name="ship" size={35} color={Colors.light.tint} />
                             </View>
                             <Text style={styles.iconText}>Ships</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => router.push('/(Ai)')} style={styles.IconCont}>
                             <View style={styles.icon}>
-                                <MaterialIcons name="support-agent" size={30} color="black" />
+                                <MaterialIcons name="support-agent" size={35} color={Colors.light.tint} />
                             </View>
                             <Text style={styles.iconText}>Supporting</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => router.push('/(tabs)/More')} style={styles.IconCont}>
                             <View style={styles.icon}>
-                                <MaterialCommunityIcons name="information-variant" size={30} color="black" />
+                                <MaterialCommunityIcons name="information-variant" size={35} color={Colors.light.tint} />
                             </View>
                             <Text style={styles.iconText}>James</Text>
                         </TouchableOpacity>
-
                     </View>
-
                 </View>
             </ScrollView>
         </LinearGradient >
@@ -226,15 +224,12 @@ const styles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 50,
-        backgroundColor: 'rgba(0, 255, 247, 0.35)',
+        borderRadius: 5,
         color: Colors.light.tint,
-        borderWidth: 1,
-        borderColor: Colors.light.tint,
         marginBottom: 5,
     },
     iconText: {
-        fontSize: 16,
+        fontSize: 14,
         fontFamily: Fonts.family.medium,
         color: Colors.light.tint,
         textAlign: 'center',
