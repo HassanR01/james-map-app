@@ -1,6 +1,9 @@
-import { View, Text, ScrollView, Image } from 'react-native'
+import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { ConstantStyles } from '@/constants/Styles'
+import { router } from 'expo-router'
+import { Fonts } from '@/constants/Fonts'
+import { Colors } from '@/constants/Colors'
 
 export default function Maps() {
 
@@ -34,7 +37,7 @@ export default function Maps() {
 
   return (
     <ScrollView style={ConstantStyles.scrollViewTag}>
-      <View style={{paddingVertical: 20}}>
+      <View style={{ paddingVertical: 20, width: '100%' }}>
         <Text style={[ConstantStyles.h2, { textAlign: 'left' }]}>Maps In Egypt</Text>
         <View style={{
           width: '100%',
@@ -48,12 +51,12 @@ export default function Maps() {
             <View key={index} style={{
               width: '100%',
               display: 'flex',
-              flexDirection: 'row',
+              flexDirection: 'column',
               justifyContent: 'center',
               alignItems: 'center',
-              marginVertical: 10,
+              marginVertical: 5,
             }}>
-              <Text style={[ConstantStyles.h3, { textAlign: 'left', width: '100%' }]}>{map.name}</Text>
+              <Text style={[ConstantStyles.text, { textAlign: 'left', width: '100%', fontFamily: Fonts.family.bold, fontSize: 18 }]}>{map.name}</Text>
               <View style={{
                 width: '100%',
                 display: 'flex',
@@ -61,15 +64,32 @@ export default function Maps() {
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
-                <Image source={map.image} style={{ width: 300, height: 300 }} />
+                <TouchableOpacity
+                  onPress={() => router.push({
+                    pathname: '/(Maps)/zone',
+                    params: {
+                      coordinates: JSON.stringify(map.coordinates)
+                    }
+                  })}
+                  style={{
+                    width: "100%",
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderRadius: 10,
+                    overflow: 'hidden',
+                    backgroundColor: Colors.light.loading,
+                  }}
+                >
+                  <Image source={map.image} style={{ width: "100%", height: 100 }} />
+                </TouchableOpacity>
               </View>
             </View>
           ))}
         </View>
       </View>
-      <View style={{paddingVertical: 20}}>
-        <Text style={[ConstantStyles.h2, {textAlign: 'left'}]}>Maps In UAE</Text>
+      <View style={{ paddingVertical: 20 }}>
+        <Text style={[ConstantStyles.h2, { textAlign: 'left' }]}>Maps In UAE</Text>
       </View>
-    </ScrollView>
-  )
+    </ScrollView>)
 }

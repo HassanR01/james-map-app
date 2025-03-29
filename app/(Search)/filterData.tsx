@@ -81,11 +81,13 @@ export default function FilterData() {
   const HandleSearchResults = () => {
     const filter = {
       type: filterUnitType,
-      price: filterUnitPrice,
-      area: filterUnitArea,
-      rooms: filterUnitRooms,
-      baths: filterUnitBaths,
-      deliveryDate: filterDeliveryDate
+      minPrice: filterUnitPrice.min,
+      maxPrice: filterUnitPrice.max,
+      minArea: filterUnitArea.min,
+      maxArea: filterUnitArea.max,
+      bedRooms: filterUnitRooms,
+      bathRooms: filterUnitBaths,
+      deliveryDate: filterDeliveryDate,
     }
     router.push({
       pathname: '/(Search)/SearchResults',
@@ -173,24 +175,24 @@ export default function FilterData() {
 
         <View style={{ paddingVertical: 10 }}>
           <Text style={[ConstantStyles.h2, { textAlign: 'left' }]}>Filter Area</Text>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', marginVertical: 5 }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', marginVertical: 5 }}>
             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginVertical: 10 }}>
-              <Text style={[ConstantStyles.text, { textAlign: 'left', marginRight: 5 }]}>Min Area:</Text>
+              <Text style={[ConstantStyles.text, { textAlign: 'left', marginRight: 5 }]}>From:</Text>
               <TextInput
-                style={styles.input}
+                style={[styles.input, { marginRight: 10 }]}
                 keyboardType="numeric"
-                placeholder="Area"
+                placeholder="Min Area"
                 placeholderTextColor={'gray'}
                 value={filterUnitArea.min}
                 onChangeText={(text) => setFilterUnitArea({ ...filterUnitArea, min: text })}
               />
             </View>
             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginVertical: 10 }}>
-              <Text style={[ConstantStyles.text, { textAlign: 'left', marginRight: 5 }]}>Max Area:</Text>
+              <Text style={[ConstantStyles.text, { textAlign: 'left', marginRight: 5 }]}>To:</Text>
               <TextInput
                 style={styles.input}
                 keyboardType="numeric"
-                placeholder="Rooms"
+                placeholder="Max Area"
                 placeholderTextColor={'gray'}
                 value={filterUnitArea.max}
                 onChangeText={(text) => setFilterUnitArea({ ...filterUnitArea, max: text })}
@@ -464,22 +466,6 @@ export default function FilterData() {
                 padding: 10,
                 borderRadius: 10,
                 width: 100,
-                backgroundColor: filterDeliveryDate === '2026' ? '#c1e8ff' : '#f2f2f2',
-              }}
-              onPress={() => setFilterDeliveryDate('2026')}
-            >
-              <Text style={[ConstantStyles.text, { textAlign: 'center', fontFamily: Fonts.family.bold, width: '100%' }]}>2026</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-                margin: 10,
-                padding: 10,
-                borderRadius: 10,
-                width: 100,
                 backgroundColor: filterDeliveryDate === '2027' ? '#c1e8ff' : '#f2f2f2',
               }}
               onPress={() => setFilterDeliveryDate('2027')}
@@ -501,6 +487,22 @@ export default function FilterData() {
               onPress={() => setFilterDeliveryDate('2028')}
             >
               <Text style={[ConstantStyles.text, { textAlign: 'center', fontFamily: Fonts.family.bold, width: '100%' }]}>2028</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+                margin: 10,
+                padding: 10,
+                borderRadius: 10,
+                width: 100,
+                backgroundColor: filterDeliveryDate === '2029' ? '#c1e8ff' : '#f2f2f2',
+              }}
+              onPress={() => setFilterDeliveryDate('2029')}
+            >
+              <Text style={[ConstantStyles.text, { textAlign: 'center', fontFamily: Fonts.family.bold, width: '100%' }]}>2029</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -536,7 +538,7 @@ export default function FilterData() {
           }}
           onPress={() => HandleSearchResults()}
         >
-          <AntDesign name="filter" size={30} color={Colors.light.background} style={{marginRight: 10}} />
+          <AntDesign name="filter" size={30} color={Colors.light.background} style={{ marginRight: 10 }} />
           <Text style={{ fontSize: 20, color: 'white', textAlign: 'center', fontFamily: Fonts.family.bold }}>Filter Units</Text>
         </TouchableOpacity>
       </View>

@@ -128,7 +128,7 @@ export default function Launching() {
                             <Text style={styles.iconText}>Articles</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity onPress={() => router.push('/(Maps)')} style={styles.IconCont}>
+                        <TouchableOpacity onPress={() => router.push('/(tabs)/Maps')} style={styles.IconCont}>
                             <View style={styles.icon}>
                                 <FontAwesome6 name="map-location-dot" size={24} color="black" />
                             </View>
